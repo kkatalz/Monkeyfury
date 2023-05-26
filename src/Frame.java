@@ -186,6 +186,9 @@ public class Frame extends JFrame {
         takeAwayBanana.setForeground(Color.black);
         takeAwayBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-25, PANEL_Y_FROM_TOP+500,155, 50);
         backgroundPanel.add(takeAwayBanana);
+
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
+
     }
 
     public static void main(String[] args) {
@@ -200,7 +203,7 @@ public class Frame extends JFrame {
             //Path
             // liza: /home/liza/Downloads/beach.jpeg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/Downloads/beach.jpeg");
         }
 
         @Override
