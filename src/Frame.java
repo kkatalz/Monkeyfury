@@ -119,6 +119,41 @@ public class Frame extends JFrame {
         readInstuctions.setForeground(Color.black);
         readInstuctions.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT, PANEL_Y_FROM_TOP,100, 50);
         backgroundPanel.add(readInstuctions);
+        JFrame instruction=new JFrame();
+        instruction.setSize(460,460);
+        instruction.setLocationRelativeTo(null);
+        JTextArea textInstruction= new JTextArea(
+                "1. Гравці:  Квадрат ліворуч - належить комп’ютеру , другий-користувачу.\n" +
+                        "\n2. Розташування та кількість мавпячих кораблів: Кожен гравець має 10 кораблів(один шестипалубний, 2 чотирипалубних, 3 трипалубних, 4 двопалубних). Для гри, необхідно розмістити кораблі горизонтально або вертикально, так, щоб вони не торкались один одного . Користувач має розмістити 10 кораблів тільки на своїй частині прямокутника - лівому квадраті. Розташування кораблів комп'ютера заповнюється автоматично. Праворуч від поля бою знаходиться список , у якому відображаються види кораблів, їх кількість і кількість клітинок, які відводяться для конкретного корабля(1 палуба=1 клітинка. Відповідно, для розміщення шестипалубного корабля необхідно вести координати 6-ти послідовних клітинок(формат: а8), які заповнюються бананами). У разі неправильно розташування, користувач може стерти корабель - нажавши на кнопку 'прибрати' і вести координати.\n" +
+                        "\n" +
+                        "\n3. Влучання: Кількість влучань обмежена(про їх кількість свідчитиме лічильник). Із збільшенням рівня складності,  кількість ходів у користувача зменшується. У ході гри кількість ходів зменшується тільки тоді, коли гравець не знайшов банани противника. Після пострілу гравцю повідомляється результат: 'знайдено-забрано повністю', 'знайдено один банан' або 'промахнулись '. У разі “знайдено” - банан змінить колір на червоний і Ви маєте ходити ще раз, поки не промахнетесь; “промахнулись ”-користувач побачить повідомлення “корабля на цій клітинці немає” і гра продовжується; коли ж користувач потопить корабель, з'явиться повідомлення  ”Ваш корабель потоплено/ потоплено корабель супротивника !” Гра триває до моменту, коли мавпочка не знайде всі банани іншої.\n" +
+                        "\n" +
+                        "\n4. Рівні складності: гра містить три рівні складності, позначені чорними кружечками в куті екрана." +
+                        "\n" +
+                        "    Перший рівень - стовідсоткове знайдення всіх бананів. Дається 70 ходів. Так як загальна кількість клітинок - 100, з яких 31 - заповнені бананами, то навіть використавши 69 ходів, стріляючи по клітинках, які не містять кораблів , 70-та клітинка міститиме корабель. А у разі влучання кількість ходів не зменшується;\n" +
+                        "\n" +
+                        "   Другий рівень - 80-відсоткове попадання . Надається 54 ходи;\n" +
+                        "\n" +
+                        "   Третій рівень - 40 -відсоткове попадання.  Надається 24 ходи.\n" +
+                        "\n" +
+                        "\n" +
+                        "\n5. Правила перемоги: Гравець, який першим знайде всі банани противника, вважається переможцем."
+
+        );
+        textInstruction.setLineWrap(true);
+        textInstruction.setWrapStyleWord(true);
+        JPanel instructionContainer = new JPanel();
+        JScrollPane instructionScroll=new JScrollPane(textInstruction);
+
+        instructionContainer.add(instructionScroll);
+
+        instructionScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        instructionScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        readInstuctions.addActionListener(e ->{
+            instruction.getContentPane().add(instructionScroll);
+            instruction.setVisible(true);
+
+        });
 
         //Choose level BUTTON
         JLabel gameLevelLabel = new JLabel("Оберіть рівень гри: ");
@@ -191,6 +226,7 @@ public class Frame extends JFrame {
 
     }
 
+
     public static void main(String[] args) {
         new Frame();
     }
@@ -203,7 +239,7 @@ public class Frame extends JFrame {
             //Path
             // liza: /home/liza/Downloads/beach.jpeg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/Downloads/beach.jpeg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
         }
 
         @Override
