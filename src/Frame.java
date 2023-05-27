@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Frame extends JFrame {
+
+    public int levelOfGame;
     public static final int FRAME_WIDTH = 1350;
     public static final int FRAME_HEIGHT = 700;
     public static final int PANEL_FOR_FIGHT_WIDTH_HEIGHT = 400;
@@ -117,12 +119,12 @@ public class Frame extends JFrame {
         JButton readInstuctions = new JButton("Інструкція");
         readInstuctions.setBackground(Color.white);
         readInstuctions.setForeground(Color.black);
-        readInstuctions.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT, PANEL_Y_FROM_TOP,100, 50);
+        readInstuctions.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT, PANEL_Y_FROM_TOP, 100, 50);
         backgroundPanel.add(readInstuctions);
-        JFrame instruction=new JFrame();
-        instruction.setSize(460,460);
+        JFrame instruction = new JFrame();
+        instruction.setSize(460, 460);
         instruction.setLocationRelativeTo(null);
-        JTextArea textInstruction= new JTextArea(
+        JTextArea textInstruction = new JTextArea(
                 "1. Гравці:  Квадрат ліворуч - належить комп’ютеру , другий-користувачу.\n" +
                         "\n2. Розташування та кількість мавпячих кораблів: Кожен гравець має 10 кораблів(один шестипалубний, 2 чотирипалубних, 3 трипалубних, 4 двопалубних). Для гри, необхідно розмістити кораблі горизонтально або вертикально, так, щоб вони не торкались один одного . Користувач має розмістити 10 кораблів тільки на своїй частині прямокутника - лівому квадраті. Розташування кораблів комп'ютера заповнюється автоматично. Праворуч від поля бою знаходиться список , у якому відображаються види кораблів, їх кількість і кількість клітинок, які відводяться для конкретного корабля(1 палуба=1 клітинка. Відповідно, для розміщення шестипалубного корабля необхідно вести координати 6-ти послідовних клітинок(формат: а8), які заповнюються бананами). У разі неправильно розташування, користувач може стерти корабель - нажавши на кнопку 'прибрати' і вести координати.\n" +
                         "\n" +
@@ -143,13 +145,13 @@ public class Frame extends JFrame {
         textInstruction.setLineWrap(true);
         textInstruction.setWrapStyleWord(true);
         JPanel instructionContainer = new JPanel();
-        JScrollPane instructionScroll=new JScrollPane(textInstruction);
+        JScrollPane instructionScroll = new JScrollPane(textInstruction);
 
         instructionContainer.add(instructionScroll);
 
         instructionScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         instructionScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        readInstuctions.addActionListener(e ->{
+        readInstuctions.addActionListener(e -> {
             instruction.getContentPane().add(instructionScroll);
             instruction.setVisible(true);
 
@@ -157,7 +159,7 @@ public class Frame extends JFrame {
 
         //Choose level BUTTON
         JLabel gameLevelLabel = new JLabel("Оберіть рівень гри: ");
-        gameLevelLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-35, PANEL_Y_FROM_TOP+55,350, 50);
+        gameLevelLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 35, PANEL_Y_FROM_TOP + 55, 350, 50);
         gameLevelLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
         backgroundPanel.add(gameLevelLabel);
 
@@ -165,63 +167,91 @@ public class Frame extends JFrame {
         JButton level1Button = new JButton("1");
         level1Button.setBackground(Color.white);
         level1Button.setForeground(Color.black);
-        level1Button.setBounds(35/2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-50, PANEL_Y_FROM_TOP+110,45, 45);
+        level1Button.setBounds(35 / 2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 50, PANEL_Y_FROM_TOP + 110, 45, 45);
         backgroundPanel.add(level1Button);
+        level1Button.addActionListener(e -> {
+            levelOfGame = 1;
+        });
 
         JButton level2Button = new JButton("2");
         level2Button.setBackground(Color.white);
         level2Button.setForeground(Color.black);
-        level2Button.setBounds(35/2 *PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT+25, PANEL_Y_FROM_TOP+120,50, 50);
+        level2Button.setBounds(35 / 2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 25, PANEL_Y_FROM_TOP + 120, 50, 50);
         backgroundPanel.add(level2Button);
+        level2Button.addActionListener(e -> {
+            levelOfGame = 2;
+        });
 
         JButton level3Button = new JButton("3");
         level3Button.setBackground(Color.white);
         level3Button.setForeground(Color.black);
-        level3Button.setBounds(35/2  * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT+100, PANEL_Y_FROM_TOP+110,45, 45);
+        level3Button.setBounds(35 / 2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 100, PANEL_Y_FROM_TOP + 110, 45, 45);
         backgroundPanel.add(level3Button);
+        level3Button.addActionListener(e -> {
+            levelOfGame = 3;
+        });
 
-        //CHOOSE BANANAS TYPE BUTTON
-        JButton bananasType = new JButton("Оберіть тип банана");
-        bananasType.setBackground(Color.white);
-        bananasType.setForeground(Color.black);
-        bananasType.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-25, PANEL_Y_FROM_TOP+190,155, 50);
+        //CHOOSE BANANAS TYPE LABEL
+        JLabel bananasType = new JLabel("Оберіть тип банана ");
+        bananasType.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 25, PANEL_Y_FROM_TOP + 190, 350, 50);
+        bananasType.setFont(new Font("Calibri", Font.PLAIN, 20));
         backgroundPanel.add(bananasType);
 
         //LIST OF BANANAS TYPE BUTTON
-        String[] choices = { "", "двопалубні x4", "трипалубні x3", "чотирипалубні x2","шестипалубні x1"};
+        String[] choices = {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
         JComboBox<String> listOfBananas = new JComboBox(choices);
         listOfBananas.setBackground(Color.white);
         listOfBananas.setForeground(Color.black);
-        listOfBananas.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-15, PANEL_Y_FROM_TOP+270,135, 40);
+        listOfBananas.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 15, PANEL_Y_FROM_TOP + 270, 135, 40);
         backgroundPanel.add(listOfBananas);
 
         //COORDINATE LABEL
         JLabel coordinateLabel = new JLabel("Напишіть координати (a8)");
         coordinateLabel.setForeground(Color.black);
         coordinateLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-        coordinateLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-45, PANEL_Y_FROM_TOP+320,275, 50);
+        coordinateLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 45, PANEL_Y_FROM_TOP + 320, 275, 50);
         backgroundPanel.add(coordinateLabel);
 
         //FILL COORDINATES
-        JTextField typeCoordinate =new JTextField();
+        JTextField typeCoordinate = new JTextField();
         typeCoordinate.setBackground(Color.white);
-        typeCoordinate.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT+35, PANEL_Y_FROM_TOP+365,35, 35);
+        typeCoordinate.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 35, PANEL_Y_FROM_TOP + 365, 35, 35);
         backgroundPanel.add(typeCoordinate);
 
         //CHOOSE BANANAS TYPE BUTTON
         JButton putBanana = new JButton("Поставити банан");
         putBanana.setBackground(Color.white);
         putBanana.setForeground(Color.black);
-        putBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-25, PANEL_Y_FROM_TOP+425,155, 50);
+        putBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 115, PANEL_Y_FROM_TOP + 425, 155, 50);
         backgroundPanel.add(putBanana);
 
         //CHOOSE BANANAS TYPE BUTTON
         JButton takeAwayBanana = new JButton("Прибрати банан");
         takeAwayBanana.setBackground(Color.white);
         takeAwayBanana.setForeground(Color.black);
-        takeAwayBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT-25, PANEL_Y_FROM_TOP+500,155, 50);
+        takeAwayBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 70, PANEL_Y_FROM_TOP + 425, 155, 50);
         backgroundPanel.add(takeAwayBanana);
 
+        //START GAME BUTTON
+        JButton start = new JButton("START");
+        start.setBackground(Color.white);
+        start.setForeground(Color.black);
+        start.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 25, PANEL_Y_FROM_TOP + 505, 155, 50);
+        backgroundPanel.add(start);
+
+        //check if game level is chosen
+        JLabel showGameLevel = new JLabel();
+        showGameLevel.setBounds(25, FRAME_HEIGHT - 205, 350, 50);
+        showGameLevel.setForeground(Color.white);
+        showGameLevel.setFont(new Font("Calibri", Font.PLAIN, 25));
+        backgroundPanel.add(showGameLevel);
+        start.addActionListener(e -> {
+            if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
+                JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }else{
+                showGameLevel.setText("Обраний рівень гри - " + levelOfGame);
+            }
+        });
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
     }
