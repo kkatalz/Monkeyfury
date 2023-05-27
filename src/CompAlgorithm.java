@@ -326,7 +326,6 @@ public class CompAlgorithm {
     }
 
     private void makeUnPlaceInSidesVertical(String place, int sizeOfBanana, int numberOfBanana) {
-        // чотирипалубний
         if (place.charAt(0) != 'а') { // left side
             char t = chars.get(chars.indexOf(place.charAt(0)) - 1);
             String s = String.valueOf(t) + place.charAt(1);
@@ -353,11 +352,44 @@ public class CompAlgorithm {
     }
 
     private String makeUnPlaceLeftUp(String place){ // зліва зверху, returns place which has to be unavailable
-        int num = place.charAt(1);
+        int num = Integer.parseInt(String.valueOf(place.charAt(1)));
         if(place.length() > 2) num = 10;
         if(place.charAt(0) != 'а' && num != 1){
             char ch = chars.get(chars.indexOf(place.charAt(0)) - 1);
             num--;
+            return String.valueOf(ch) + num;
+        }
+        return "";
+    }
+
+    private String makeUnPlaceLeftDown(String place){ // зліва знизу
+        int num = Integer.parseInt(String.valueOf(place.charAt(1)));
+        if(place.length() > 2) num = 10;
+        if(place.charAt(0) != 'а' && num != 10){
+            char ch = chars.get(chars.indexOf(place.charAt(0)) -1);
+            num++;
+            return String.valueOf(ch) + num;
+        }
+        return "";
+    }
+
+    private String makeUnPlaceRightUp(String place){ // справа згори
+        int num = Integer.parseInt(String.valueOf(place.charAt(1)));
+        if(place.length() > 2) num = 10;
+        if(place.charAt(0) != 'з' && num != 1){
+            char ch = chars.get(chars.indexOf(place.charAt(0)) + 1);
+            num--;
+            return String.valueOf(ch) + num;
+        }
+        return "";
+    }
+
+    private String makeUnPlaceRightDown(String place){ // справа знизу
+        int num = Integer.parseInt(String.valueOf(place.charAt(1)));
+        if(place.length() > 2) num = 10;
+        if(place.charAt(0) != 'з' && num != 10){
+            char ch = chars.get(chars.indexOf(place.charAt(0)) + 1);
+            num++;
             return String.valueOf(ch) + num;
         }
         return "";
