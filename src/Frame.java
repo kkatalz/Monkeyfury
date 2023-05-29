@@ -4,6 +4,7 @@ import java.awt.*;
 public class Frame extends JFrame {
 
     public int levelOfGame;
+    public byte numberOfSteps;
     public static final int FRAME_WIDTH = 1350;
     public static final int FRAME_HEIGHT = 700;
     public static final int PANEL_FOR_FIGHT_WIDTH_HEIGHT = 400;
@@ -11,7 +12,10 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.LIGHT_GRAY;
 
+
     private JPanel areaForUser, areaForComputer;
+    private JTextField typeCoordinate;
+    private BackgroundPanel backgroundPanel;
 
     Frame() {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -22,7 +26,7 @@ public class Frame extends JFrame {
     }
 
     public void showAreasForFight() {
-        BackgroundPanel backgroundPanel = new BackgroundPanel();
+        backgroundPanel = new BackgroundPanel();
         this.setContentPane(backgroundPanel);
         areaForUser = new JPanel() {
             protected void paintComponent(Graphics g) {
@@ -213,7 +217,7 @@ public class Frame extends JFrame {
         backgroundPanel.add(coordinateLabel);
 
         //FILL COORDINATES
-        JTextField typeCoordinate = new JTextField();
+        typeCoordinate = new JTextField();
         typeCoordinate.setBackground(Color.white);
         typeCoordinate.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 35, PANEL_Y_FROM_TOP + 365, 35, 35);
         backgroundPanel.add(typeCoordinate);
@@ -226,11 +230,20 @@ public class Frame extends JFrame {
         backgroundPanel.add(putBanana);
 
         //CHOOSE BANANAS TYPE BUTTON
-        JButton takeAwayBanana = new JButton("Прибрати банан");
-        takeAwayBanana.setBackground(Color.white);
-        takeAwayBanana.setForeground(Color.black);
-        takeAwayBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 70, PANEL_Y_FROM_TOP + 425, 155, 50);
-        backgroundPanel.add(takeAwayBanana);
+        JButton deleteBanana = new JButton("Прибрати банан");
+        deleteBanana.setBackground(Color.white);
+        deleteBanana.setForeground(Color.black);
+        deleteBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 70, PANEL_Y_FROM_TOP + 425, 155, 50);
+        backgroundPanel.add(deleteBanana);
+
+        //Check if coordinates are written in correct format
+        putBanana.addActionListener(e -> {
+            checkFormatOfCoordinates();
+        });
+        deleteBanana.addActionListener(e -> {
+            checkFormatOfCoordinates();
+        });
+
 
         //START GAME BUTTON
         JButton start = new JButton("START");
@@ -245,15 +258,60 @@ public class Frame extends JFrame {
         showGameLevel.setForeground(Color.white);
         showGameLevel.setFont(new Font("Calibri", Font.PLAIN, 25));
         backgroundPanel.add(showGameLevel);
+
         start.addActionListener(e -> {
             if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }else{
-                showGameLevel.setText("Обраний рівень гри - " + levelOfGame);
+            } else {
+                if (levelOfGame == 1) numberOfSteps = 70;
+                else if (levelOfGame == 2) numberOfSteps = 54;
+                else numberOfSteps = 24;
+                showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
+
+
             }
+
+
         });
+
+
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
+    }
+
+    //Check if coordinates are written in correct format
+    public void checkFormatOfCoordinates() {
+        String inputCoordinates = typeCoordinate.getText();
+        if (inputCoordinates.isEmpty() || inputCoordinates == null) {
+            JOptionPane.showMessageDialog(backgroundPanel, "Заповніть координати ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+        } else if (inputCoordinates.length() == 1) {
+            JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> У координатах обов'язково має бути літера й цифра", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+        } else if (!Character.isLetter(inputCoordinates.charAt(0))) {
+            JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Перший символ має бути літерою", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else if (inputCoordinates.length() == 3) {
+            if (!Character.isDigit(inputCoordinates.charAt(1)) || !Character.isDigit(inputCoordinates.charAt(2))) {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий й третій символи мають бути цифрами. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else if (inputCoordinates.charAt(1) != '1' && inputCoordinates.charAt(2) != '0') {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути '1', а другий = '0 '. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            } else if (inputCoordinates.charAt(1) != '1') {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути '1'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else if (inputCoordinates.charAt(2) != '0') {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Третій символ має бути '0'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } else if (inputCoordinates.length() == 2) {
+            if (!Character.isDigit(inputCoordinates.charAt(1))) {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути цифрою. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } else if (inputCoordinates.length() > 3) {
+            JOptionPane.showMessageDialog(backgroundPanel, "У координаті не може бути більше трьох символів ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+        }
+        typeCoordinate.setText("");
     }
 
 
