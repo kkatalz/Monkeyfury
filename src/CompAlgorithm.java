@@ -4,7 +4,7 @@ import java.util.*;
 public class CompAlgorithm {
     private ArrayList<Integer> numbers;
     private ArrayList<Character> chars;
-    private ArrayList<String> points6, points4, point4n2, unavailablePoints6, unavailablePoints4, unavailablePoints4n2;
+    private ArrayList<String> points6, points4, points4n2, unavailablePoints6, unavailablePoints4, unavailablePoints4n2;
     private ArrayList<String> points3n1, unavailablePoints3n1, points3n2, unavailablePoints3n2, points3n3, unavailablePoints3n3;
     private ArrayList<String> points2n1, unavailablePoints2n1, points2n2, unavailablePoints2n2, points2n3, unavailablePoints2n3; // letter and number
     private ArrayList<String> points2n4, unavailablePoints2n4;
@@ -22,7 +22,7 @@ public class CompAlgorithm {
         unavailablePoints6 = new ArrayList<>();
         points4 = new ArrayList<>();
         unavailablePoints4 = new ArrayList<>();
-        point4n2 = new ArrayList<>();
+        points4n2 = new ArrayList<>();
         unavailablePoints4n2 = new ArrayList<>();
         points3n1 = new ArrayList<>();
         unavailablePoints3n1 = new ArrayList<>();
@@ -346,6 +346,122 @@ public class CompAlgorithm {
             points6.addAll(s);
             for(int i =0; i < unavailablePoints6.size(); i++){
                 if(unavailablePoints6.get(i).equals("")) unavailablePoints6.remove(i);
+            }
+        }
+
+        else if(size == 4){
+            if(numberOfBanana == 1){
+                Set<String> s = new LinkedHashSet<>(unavailablePoints4);
+                unavailablePoints4.clear();
+                unavailablePoints4.addAll(s);
+
+                s.clear();
+                s.addAll(points4);
+                points4.clear();
+                points4.addAll(s);
+                for(int i =0; i < unavailablePoints4.size(); i++){
+                    if(unavailablePoints4.get(i).equals("")) unavailablePoints4.remove(i);
+                }
+            } else if(numberOfBanana == 2){
+                Set<String> s = new LinkedHashSet<>(unavailablePoints4n2);
+                unavailablePoints4n2.clear();
+                unavailablePoints4n2.addAll(s);
+
+                s.clear();
+                s.addAll(points4n2);
+                points4n2.clear();
+                points4n2.addAll(s);
+                for(int i =0; i < unavailablePoints4n2.size(); i++){
+                    if(unavailablePoints4n2.get(i).equals("")) unavailablePoints4n2.remove(i);
+                }
+            }
+        } else if(size == 3){
+            if(numberOfBanana == 1){
+                Set<String> s = new LinkedHashSet<>(unavailablePoints3n1);
+                unavailablePoints3n1.clear();
+                unavailablePoints3n1.addAll(s);
+
+                s.clear();
+                s.addAll(points3n1);
+                points3n1.clear();
+                points3n1.addAll(s);
+                for(int i =0; i < unavailablePoints3n1.size(); i++){
+                    if(unavailablePoints3n1.get(i).equals("")) unavailablePoints3n1.remove(i);
+                }
+            } else if(numberOfBanana == 2){ // 3n2
+                Set<String> s = new LinkedHashSet<>(unavailablePoints3n2);
+                unavailablePoints3n2.clear();
+                unavailablePoints3n2.addAll(s);
+
+                s.clear();
+                s.addAll(points3n2);
+                points3n2.clear();
+                points3n2.addAll(s);
+                for(int i =0; i < unavailablePoints3n2.size(); i++){
+                    if(unavailablePoints3n2.get(i).equals("")) unavailablePoints3n2.remove(i);
+                }
+            } else if(numberOfBanana == 3){ // 3n3
+                Set<String> s = new LinkedHashSet<>(unavailablePoints3n3);
+                unavailablePoints3n3.clear();
+                unavailablePoints3n3.addAll(s);
+
+                s.clear();
+                s.addAll(points3n3);
+                points3n3.clear();
+                points3n3.addAll(s);
+                for(int i =0; i < unavailablePoints3n3.size(); i++){
+                    if(unavailablePoints3n3.get(i).equals("")) unavailablePoints3n3.remove(i);
+                }
+            }
+        } else if(size == 2){
+            if(numberOfBanana == 1){ // 2n1
+                Set<String> s = new LinkedHashSet<>(unavailablePoints2n1);
+                unavailablePoints2n1.clear();
+                unavailablePoints2n1.addAll(s);
+
+                s.clear();
+                s.addAll(points2n1);
+                points2n1.clear();
+                points2n1.addAll(s);
+                for(int i =0; i < unavailablePoints2n1.size(); i++){
+                    if(unavailablePoints2n1.get(i).equals("")) unavailablePoints2n1.remove(i);
+                }
+            } else if(numberOfBanana == 2){//2n2
+                Set<String> s = new LinkedHashSet<>(unavailablePoints2n2);
+                unavailablePoints2n2.clear();
+                unavailablePoints2n2.addAll(s);
+
+                s.clear();
+                s.addAll(points2n2);
+                points2n2.clear();
+                points2n2.addAll(s);
+                for(int i =0; i < unavailablePoints2n2.size(); i++){
+                    if(unavailablePoints2n2.get(i).equals("")) unavailablePoints2n2.remove(i);
+                }
+            } else if(numberOfBanana == 3){ // 2n3
+                Set<String> s = new LinkedHashSet<>(unavailablePoints2n3);
+                unavailablePoints2n3.clear();
+                unavailablePoints2n3.addAll(s);
+
+                s.clear();
+                s.addAll(points2n3);
+                points2n3.clear();
+                points2n3.addAll(s);
+                for(int i =0; i < unavailablePoints2n3.size(); i++){
+                    if(unavailablePoints2n3.get(i).equals("")) unavailablePoints2n3.remove(i);
+                }
+            } else if(numberOfBanana == 4){ //2n4
+                Set<String> s = new LinkedHashSet<>(unavailablePoints2n4);
+                unavailablePoints2n4.clear();
+                unavailablePoints2n4.addAll(s);
+
+                s.clear();
+                s.addAll(points2n4);
+                points2n4.clear();
+                points2n4.addAll(s);
+                for(int i =0; i < unavailablePoints2n4.size(); i++){
+                    if(unavailablePoints2n4.get(i).equals("")) unavailablePoints2n4.remove(i);
+                }
             }
         }
     }
