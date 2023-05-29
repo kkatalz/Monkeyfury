@@ -556,18 +556,38 @@ public class CompAlgorithm {
     }
 
     private boolean checkPlace(String s) { // повертає true, якщо місце вільне
-        for (int i = 0; i < unavailablePoints6.size(); i++) {
-            if (s.equals(unavailablePoints6.get(i))){
-                System.out.println("співпадає " + s + " та " + unavailablePoints6.get(i));
+        for (String value : unavailablePoints6) { //6
+            if (s.equals(value)) {
+                System.out.println("співпадає " + s + " та " + value);
                 return false;
             }
-
         }
-        for (int i = 0; i < unavailablePoints4.size(); i++) {
-            if (s.equals(unavailablePoints4.get(i))) return false;
+        for (String value : unavailablePoints4) { //4
+            if (s.equals(value)) return false;
         }
-        for (int i = 0; i < unavailablePoints4n2.size(); i++) {
-            if (s.equals(unavailablePoints4n2.get(i))) return false;
+        for (String value : unavailablePoints4n2) { // 4n2
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints3n1) { // 3n1
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints3n2) { // 3n2
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints3n3) { // 3n3
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints2n1) { // 2n1
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints2n2) { // 2n2
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints2n3) { // 2n3
+            if (s.equals(value)) return false;
+        }
+        for (String value : unavailablePoints2n4) { // 2n4
+            if (s.equals(value)) return false;
         }
         return true;
     }
