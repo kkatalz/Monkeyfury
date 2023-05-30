@@ -189,6 +189,26 @@ public class CompAlgorithm {
         }
     }
 
+    // використати метод makeUnPlaceRightUp для точки в залежності від розміру та номеру банана
+    private void addPointsPlace_RightUp(String s, int sizeOfBanana, int numberOfBanana){
+        if(sizeOfBanana == 6){
+            unavailablePoints6.add(makeUnPlaceRightUp(s));
+        } else if(sizeOfBanana == 4){
+            if(numberOfBanana == 1){
+                unavailablePoints4.add(makeUnPlaceRightUp(s)); // 4n1
+            } else if(numberOfBanana == 2) unavailablePoints4n2.add(makeUnPlaceRightUp(s)); // 4n2
+        } else if(sizeOfBanana == 3){
+            if(numberOfBanana == 1) unavailablePoints3n1.add(makeUnPlaceRightUp(s)); // 3n1
+            else if(numberOfBanana == 2) unavailablePoints3n2.add(makeUnPlaceRightUp(s)); // 3n2
+            else if(numberOfBanana == 3) unavailablePoints3n3.add(makeUnPlaceRightUp(s)); // 3n3
+        } else if(sizeOfBanana == 2){
+            if(numberOfBanana == 1) unavailablePoints2n1.add(makeUnPlaceRightUp(s));
+            else if(numberOfBanana == 2) unavailablePoints2n2.add(makeUnPlaceRightUp(s));
+            else if(numberOfBanana == 3) unavailablePoints2n3.add(makeUnPlaceRightUp(s));
+            else if(numberOfBanana == 4) unavailablePoints2n4.add(makeUnPlaceRightUp(s));
+        }
+    }
+
     private boolean placeHorizontalInBothSides(int sizeOfBanana, int numberOfBanana, char ch, int num) {
         // вирахувати місце справа
         int placeRight;
@@ -220,9 +240,12 @@ public class CompAlgorithm {
             count++;
             System.out.println(s);
         }
+
+        //
+        removeDuplicates(sizeOfBanana, numberOfBanana);
+        addPointsPlace_RightUp(s, sizeOfBanana, numberOfBanana);
         if (sizeOfBanana == 6) {
-            removeDuplicates(6, 0);
-            unavailablePoints6.add(makeUnPlaceRightUp(s)); // правий верхній кут
+          //  unavailablePoints6.add(makeUnPlaceRightUp(s)); // правий верхній кут
             unavailablePoints6.add(makeUnPlaceRightDown(s)); // правий нижній кут
             if (placeRight > 0) unavailablePoints6.add(makeUnPlaceRight(s)); // в кінці корабля
         }
