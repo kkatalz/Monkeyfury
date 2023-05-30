@@ -57,9 +57,6 @@ public class CompAlgorithm {
     public void placeBananas() {
         Random random = new Random();
 
-        // for test
-        placeHorizontalInBothSides(2, 2, 'г', 10);
-
         // шестипалубний
         int r = random.nextInt(1, 11);
         int r2 = random.nextInt(1, 11);
@@ -492,7 +489,6 @@ public class CompAlgorithm {
 
             if(i == placeRight - 1) addPointsPlace_Right(s, sizeOfBanana, numberOfBanana); // new
             count++;
-            System.out.println(s);
         }
 
         removeDuplicates(sizeOfBanana, numberOfBanana);
@@ -525,7 +521,6 @@ public class CompAlgorithm {
             addPointsPlace_Down_Up(s, sizeOfBanana, numberOfBanana);
 
             count++;
-            System.out.println(s);
         }
 
         // лівий верхній та нижній кут
@@ -545,8 +540,6 @@ public class CompAlgorithm {
 
         removeDuplicates(sizeOfBanana, numberOfBanana);
         // вивести в консоль точки банана
-        System.out.println("points: " + Arrays.toString(points6.toArray()));
-        System.out.println("---" + Arrays.toString(unavailablePoints6.toArray()));
         return true;
     }
 
@@ -732,27 +725,16 @@ public class CompAlgorithm {
 
 
     private boolean placeVertical(int sizeOfBanana, char randomCh, String randomNum, int numberOfBanana) { // розташувати банан вертикально
-        System.out.println("БАНАН вертикально------- " + sizeOfBanana);
 
         String s = String.valueOf(randomCh) + randomNum;
         boolean down = false;
         String resLeftDown, resRightDown;
         if (!checkPlace(s)) {
-            System.out.println("no " + s);
             return false;
         }
 
         addPoints(s, sizeOfBanana, numberOfBanana);
         makeUnPlaceInSidesVertical(s, sizeOfBanana, numberOfBanana);
-        /**
-        if (sizeOfBanana == 6) {
-            points6.add(s);
-            unavailablePoints6.add(s);
-            makeUnPlaceInSidesVertical(s, sizeOfBanana, numberOfBanana);
-        }
-      **/
-        System.out.println(s);
-        System.out.println("UN 288 ---------------" + s);
 
         int placeUp = Integer.parseInt(randomNum) - 1;
         if (placeUp < (sizeOfBanana - 1)) {
@@ -760,14 +742,6 @@ public class CompAlgorithm {
         }
 
         if (!down) { // зарезервувати знизу по вертикалі
-            /**
-            if (sizeOfBanana == 6) {
-                unavailablePoints6.add(makeUnPlaceRightDown(s));
-                unavailablePoints6.add(makeUnPlaceLeftDown(s));
-                    unavailablePoints6.add(makeUnPlaceDown(s));
-
-            }
-             **/
 
             addPointsPlace_RightDown(s, sizeOfBanana, numberOfBanana);
             addPointsPlace_LeftDown(s, sizeOfBanana, numberOfBanana);
@@ -784,35 +758,18 @@ public class CompAlgorithm {
                 removeDuplicates(sizeOfBanana, numberOfBanana);
                 // перевірка місця
                 if (!checkPlace(s)) {
-                    System.out.println("no 307-----" + s);
                     return false;
                 }
 
                 if (i == sizeOfBanana - 2) {// зліва та справа зверху по боках
-                    /**
-                    if (sizeOfBanana == 6) {
-                        unavailablePoints6.add(makeUnPlaceLeftUp(s));
-                        unavailablePoints6.add(makeUnPlaceRightUp(s));
-                        unavailablePoints6.add(makeUnPlaceUp(s));
-                    }
-                     **/
                     addPointsPlace_LeftUp(s, sizeOfBanana, numberOfBanana);
                     addPointsPlace_RightUp(s, sizeOfBanana, numberOfBanana);
                     addPointsPlace_Up(s, sizeOfBanana, numberOfBanana);
                 }
-                /**
-                if (sizeOfBanana == 6) {
-                    points6.add(s);
-                    unavailablePoints6.add(s);
-                    makeUnPlaceInSidesVertical(s, 6, 1);
-                }
-               **/
 
                 addPoints(s, sizeOfBanana, numberOfBanana);
                 makeUnPlaceInSidesVertical(s, sizeOfBanana, numberOfBanana);
 
-                System.out.println(s);
-                System.out.println("UN 356---------------" + s);
                 count++;
             }
         }
@@ -827,22 +784,9 @@ public class CompAlgorithm {
                     removeDuplicates(sizeOfBanana, numberOfBanana);
                     // перевірка місця
                     if (!checkPlace(s)) {
-                        System.out.println("no 352---------" + s);
                         return false;
                     }
 
-                    /**
-                    if (sizeOfBanana == 6) {
-                        points6.add(s);
-                        unavailablePoints6.add(s);
-                        makeUnPlaceInSidesVertical(s, 6, 1);
-                        if (i == placeDown - 1) {
-                            unavailablePoints6.add(makeUnPlaceRightDown(s));
-                            unavailablePoints6.add(makeUnPlaceLeftDown(s));
-                            unavailablePoints6.add(makeUnPlaceDown(s));
-                        }
-                    }
-                    **/
                     addPoints(s, sizeOfBanana, numberOfBanana);
                     makeUnPlaceInSidesVertical(s, sizeOfBanana, numberOfBanana);
 
@@ -851,13 +795,10 @@ public class CompAlgorithm {
                         addPointsPlace_RightDown(s, sizeOfBanana, numberOfBanana);
                         addPointsPlace_LeftDown(s, sizeOfBanana, numberOfBanana);
                     }
-                    System.out.println(s);
-                    System.out.println("UN 395---------------" + s);
                     count++;
                 }
             }
         }
-        System.out.println("БАНАН------- " + sizeOfBanana + " закінчився");
         return true;
     }
 
@@ -994,7 +935,6 @@ public class CompAlgorithm {
     private boolean checkPlace(String s) { // повертає true, якщо місце вільне
         for (String value : unavailablePoints6) { //6
             if (s.equals(value)) {
-                System.out.println("співпадає " + s + " та " + value);
                 return false;
             }
         }
@@ -1053,7 +993,6 @@ public class CompAlgorithm {
             }
 
 
-            System.out.println("UN 445-------------" + s);
         }
 
         if (place.charAt(0) != 'з') { // right side
@@ -1077,7 +1016,6 @@ public class CompAlgorithm {
                 else if(numberOfBanana == 3) unavailablePoints2n3.add(s);
                 else if(numberOfBanana == 4) unavailablePoints2n4.add(s);
             }
-            System.out.println("UN 456-------------" + s);
         }
 
     }
@@ -1088,7 +1026,6 @@ public class CompAlgorithm {
         if (place.charAt(0) != 'а' && num != 1) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) - 1);
             num--;
-            System.out.println("400---------------" + String.valueOf(ch) + num);
             return String.valueOf(ch) + num;
         }
         return "";
@@ -1100,7 +1037,6 @@ public class CompAlgorithm {
         if (place.charAt(0) != 'а' && num != 10) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) - 1);
             num++;
-            System.out.println("412----------------" + String.valueOf(ch) + num);
             return String.valueOf(ch) + num;
         }
         return "";
@@ -1112,7 +1048,6 @@ public class CompAlgorithm {
         if (place.charAt(0) != 'з' && num != 1) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) + 1);
             num--;
-            System.out.println("424----------------" + String.valueOf(ch) + num);
             return String.valueOf(ch) + num;
         }
         return "";
@@ -1124,7 +1059,6 @@ public class CompAlgorithm {
         if (place.charAt(0) != 'з' && num != 10) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) + 1);
             num++;
-            System.out.println("436--------------" + String.valueOf(ch) + num);
             return String.valueOf(ch) + num;
         }
         return "";
@@ -1138,7 +1072,6 @@ public class CompAlgorithm {
         }
         num = num + 1;
         String s = String.valueOf(ch) + num;
-        System.out.println("448---------------" + s);
         return s;
     }
 
@@ -1149,7 +1082,6 @@ public class CompAlgorithm {
         if (num == 1) return "";
         num = num - 1;
         String s = String.valueOf(ch) + num;
-        System.out.println("458----------------" + s);
         return s;
     }
 }
