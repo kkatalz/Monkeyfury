@@ -78,7 +78,7 @@ public class CompAlgorithm {
     }
 
     // обробити методи makeUnPlaceDown та makeUnPlaceUp до конкретної точки в залежності від розміру та номеру банана
-    private void addPointsPlaceDownPlaceUp(String s, int sizeOfBanana, int numberOfBanana) {
+    private void addPointsPlace_Down_Up(String s, int sizeOfBanana, int numberOfBanana) {
         if (sizeOfBanana == 6) { //6
             unavailablePoints6.add(s);
             points6.add(s);
@@ -199,7 +199,7 @@ public class CompAlgorithm {
         String s = String.valueOf(ch) + num;
         // перевірка чи місце зайняте
         if (!checkPlace(s)) return false;
-        addPointsPlaceDownPlaceUp(s, sizeOfBanana, numberOfBanana);
+        addPointsPlace_Down_Up(s, sizeOfBanana, numberOfBanana);
 
         int count = 1;
         // вирахувати чи знадобиться поміщати банан зліва
@@ -214,13 +214,8 @@ public class CompAlgorithm {
             s = s + num;
             // перевірка
             if (!checkPlace(s)) return false;
-
-            if (sizeOfBanana == 6) {
-                points6.add(s);
-                unavailablePoints6.add(s);
-                unavailablePoints6.add(makeUnPlaceDown(s));
-                unavailablePoints6.add(makeUnPlaceUp(s));
-            }
+            // додати точку до масиву, зробити її недійсною, зробити недійсними місця згори та знизу від точки
+            addPointsPlace_Down_Up(s, sizeOfBanana, numberOfBanana);
 
             count++;
             System.out.println(s);
@@ -398,7 +393,7 @@ public class CompAlgorithm {
                         System.out.println("no 352---------" + s);
                         return false;
                     }
-                    
+
                     if (sizeOfBanana == 6) {
                         points6.add(s);
                         unavailablePoints6.add(s);
