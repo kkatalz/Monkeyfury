@@ -1,4 +1,6 @@
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.*;
 
 // to create computer's algorithm for placement bananas
 public class CompAlgorithm {
@@ -8,11 +10,14 @@ public class CompAlgorithm {
     private ArrayList<String> points3n1, unavailablePoints3n1, points3n2, unavailablePoints3n2, points3n3, unavailablePoints3n3;
     private ArrayList<String> points2n1, unavailablePoints2n1, points2n2, unavailablePoints2n2, points2n3, unavailablePoints2n3; // letter and number
     private ArrayList<String> points2n4, unavailablePoints2n4;
+    private int countUn;
+    private static final Logger LOGGER = Logger.getLogger(CompAlgorithm.class.getName());
 
     public static void main(String[] args) {
         CompAlgorithm compAlgorithm = new CompAlgorithm();
         compAlgorithm.setup();
         compAlgorithm.placeBananas();
+        compAlgorithm.setLogger();
     }
 
     private void setup() {
@@ -56,6 +61,8 @@ public class CompAlgorithm {
 
     public void placeBananas() {
         Random random = new Random();
+        // порахувати скільки невдалих спроб було розташувати банани
+        countUn = 0;
 
         // шестипалубний
         int r = random.nextInt(1, 11);
@@ -93,7 +100,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(4, s.charAt(0), t, 1);
             }
-            if(!next) clearArray(4, 1);
+            if(!next) {
+                clearArray(4, 1);
+                countUn++;
+            }
         } while(!next);
 
         do {
@@ -112,7 +122,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(4, s.charAt(0), t, 2);
             }
-            if(!next) clearArray(4, 2);
+            if(!next) {
+                clearArray(4, 2);
+                countUn++;
+            }
         } while(!next);
 
 
@@ -132,7 +145,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(3, s.charAt(0), t, 1);
             }
-            if(!next) clearArray(3, 1);
+            if(!next) {
+                clearArray(3, 1);
+                countUn++;
+            }
         } while(!next);
 
         do {
@@ -151,7 +167,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(3, s.charAt(0), t, 2);
             }
-            if(!next) clearArray(3, 2);
+            if(!next) {
+                clearArray(3, 2);
+                countUn++;
+            }
         } while(!next);
 
 
@@ -171,7 +190,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(3, s.charAt(0), t, 3);
             }
-            if(!next) clearArray(3, 3);
+            if(!next){
+                clearArray(3, 3);
+                countUn++;
+            }
         } while(!next);
 
 
@@ -191,7 +213,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(2, s.charAt(0), t, 1);
             }
-            if(!next) clearArray(2, 1);
+            if(!next) {
+                clearArray(2, 1);
+                countUn++;
+            }
         } while(!next);
 
         next = false;
@@ -211,7 +236,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(2, s.charAt(0), t, 2);
             }
-            if(!next) clearArray(2, 2);
+            if(!next) {
+                clearArray(2, 2);
+                countUn++;
+            }
         } while(!next);
 
 
@@ -233,7 +261,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(2, s.charAt(0), t, 3);
             }
-            if(!next) clearArray(2, 3);
+            if(!next) {
+                clearArray(2, 3);
+                countUn++;
+            }
         } while(!next);
 
 
@@ -254,7 +285,10 @@ public class CompAlgorithm {
                 t = t.trim();
                 next = placeVertical(2, s.charAt(0), t, 4);
             }
-            if(!next) clearArray(2, 4);
+            if(!next) {
+                clearArray(2, 4);
+                countUn++;
+            }
         } while(!next);
 
         System.out.println(Arrays.toString(points6.toArray()));
@@ -1083,5 +1117,18 @@ public class CompAlgorithm {
         num = num - 1;
         String s = String.valueOf(ch) + num;
         return s;
+    }
+
+    private void setLogger(){
+        try {
+            Handler fileHandler = new FileHandler("log.txt", true);
+            fileHandler.setFormatter(new SimpleFormatter());
+
+            LOGGER.addHandler(fileHandler);
+            LOGGER.setLevel(Level.INFO);
+            LOGGER.info("Number of unsuccessful efforts to place a banana: " + String.valueOf(countUn));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "unexpected error");
+        }
     }
 }
