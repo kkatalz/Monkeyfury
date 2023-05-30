@@ -57,6 +57,9 @@ public class CompAlgorithm {
     public void placeBananas() {
         Random random = new Random();
 
+        // for test
+        placeHorizontalInBothSides(2, 2, 'г', 10);
+
         // шестипалубний
         int r = random.nextInt(1, 11);
         int r2 = random.nextInt(1, 11);
@@ -72,9 +75,221 @@ public class CompAlgorithm {
             if (s.length() > 2) t = t + s.charAt(2);
             t = t.trim();
             placeVertical(6, s.charAt(0), t, 1);
-            System.out.println("p:" + Arrays.toString(points6.toArray()));
-            System.out.println("---------" + Arrays.toString(unavailablePoints6.toArray()));
         }
+
+
+        // булева зміна щоб згенерувати ще одну координату за необхідності
+        boolean next = false;
+        do {
+            // перший чотирипалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(4, 1, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(4, s.charAt(0), t, 1);
+            }
+            if(!next) clearArray(4, 1);
+        } while(!next);
+
+        do {
+            // другий чотирипалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(4, 2, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(4, s.charAt(0), t, 2);
+            }
+            if(!next) clearArray(4, 2);
+        } while(!next);
+
+
+        do {
+            // перший трипалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(3, 1, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(3, s.charAt(0), t, 1);
+            }
+            if(!next) clearArray(3, 1);
+        } while(!next);
+
+        do {
+            // другий трипалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(3, 2, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(3, s.charAt(0), t, 2);
+            }
+            if(!next) clearArray(3, 2);
+        } while(!next);
+
+
+        do {
+            // третій трипалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(3, 3, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(3, s.charAt(0), t, 3);
+            }
+            if(!next) clearArray(3, 3);
+        } while(!next);
+
+
+        do {
+            // перший двопалалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(2, 1, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(2, s.charAt(0), t, 1);
+            }
+            if(!next) clearArray(2, 1);
+        } while(!next);
+
+        next = false;
+        do {
+            // другий двопалалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(2, 2, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(2, s.charAt(0), t, 2);
+            }
+            if(!next) clearArray(2, 2);
+        } while(!next);
+
+
+        next = false;
+
+        do {
+            // третій двопалалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(2, 3, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(2, s.charAt(0), t, 3);
+            }
+            if(!next) clearArray(2, 3);
+        } while(!next);
+
+
+        next = false;
+        do {
+            // четвертий двопалалубний
+            r = random.nextInt(1, 11);
+            r2 = random.nextInt(1, 11);
+            s = String.valueOf(chars.get(r2 - 1));
+            s = s + r; // r - number, s - letter
+            horVer = random.nextInt(1, 3);
+
+            if(horVer == 1){ // горизонтально
+                next = placeHorizontalInBothSides(2, 4, s.charAt(0), r);
+            } else if(horVer == 2){
+                String t = String.valueOf(s.charAt(1));
+                if (s.length() > 2) t = t + s.charAt(2);
+                t = t.trim();
+                next = placeVertical(2, s.charAt(0), t, 4);
+            }
+            if(!next) clearArray(2, 4);
+        } while(!next);
+
+        System.out.println(Arrays.toString(points6.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints6.toArray()));
+
+        System.out.println(Arrays.toString(points4.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints4.toArray()));
+
+        System.out.println(Arrays.toString(points4n2.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints4n2.toArray()));
+
+        System.out.println(Arrays.toString(points3n1.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints3n1.toArray()));
+
+        System.out.println(Arrays.toString(points3n2.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints3n2.toArray()));
+
+        System.out.println(Arrays.toString(points3n3.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints3n3.toArray()));
+        System.out.println(Arrays.toString(points2n1.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints2n1.toArray()));
+
+        System.out.println(Arrays.toString(points2n2.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints2n2.toArray()));
+
+        System.out.println(Arrays.toString(points2n3.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints2n3.toArray()));
+
+        System.out.println(Arrays.toString(points2n4.toArray()));
+        System.out.println("-" + Arrays.toString(unavailablePoints2n4.toArray()));
+
+
     }
 
     // обробити методи makeUnPlaceDown та makeUnPlaceUp до конкретної точки в залежності від розміру та номеру банана
@@ -275,6 +490,7 @@ public class CompAlgorithm {
             // додати точку до масиву, зробити її недійсною, зробити недійсними місця згори та знизу від точки
             addPointsPlace_Down_Up(s, sizeOfBanana, numberOfBanana);
 
+            if(i == placeRight - 1) addPointsPlace_Right(s, sizeOfBanana, numberOfBanana); // new
             count++;
             System.out.println(s);
         }
@@ -336,9 +552,11 @@ public class CompAlgorithm {
 
     private String makeUnPlaceRight(String s) {
         int i = Character.getNumericValue(s.charAt(1));
-        if (s.length() > 2 || s.charAt(0) == 'з') return "";
+        if(s.length() > 2) i = 10;
+        if (s.charAt(0) == 'з') return "";
         char ch = chars.get(chars.indexOf(s.charAt(0)) + 1);
-        return String.valueOf(ch) + i;
+        String str = String.valueOf(ch) + i;
+        return str;
     }
 
     private String makeUnPlaceLeft(String s) {
@@ -469,6 +687,46 @@ public class CompAlgorithm {
             else if (numberOfBanana == 2) unavailablePoints2n2.add(makeUnPlaceUp(s));
             else if (numberOfBanana == 3) unavailablePoints2n3.add(makeUnPlaceUp(s));
             else if (numberOfBanana == 4) unavailablePoints2n4.add(makeUnPlaceUp(s));
+        }
+    }
+
+    private void clearArray(int sizeOfBanana, int numberOfBanana) {
+        if(sizeOfBanana == 6){
+            points6.clear();
+            unavailablePoints6.clear();
+        } else if(sizeOfBanana == 4){
+            if(numberOfBanana == 1){
+                points4.clear();
+                unavailablePoints4.clear();
+            } else if(numberOfBanana == 2){
+                points4n2.clear();
+                unavailablePoints4n2.clear();
+            }
+        } else if(sizeOfBanana == 3){
+            if(numberOfBanana == 1){
+                points3n1.clear();
+                unavailablePoints3n1.clear();
+            } else if(numberOfBanana == 2){
+                points3n2.clear();
+                unavailablePoints3n2.clear();
+            } else if(numberOfBanana == 3){
+                points3n3.clear();
+                unavailablePoints3n3.clear();
+            }
+        } else if(sizeOfBanana == 2){
+            if(numberOfBanana == 1){
+                points2n1.clear();
+                unavailablePoints2n1.clear();
+            } else if(numberOfBanana == 2){
+                points2n2.clear();
+                unavailablePoints2n2.clear();
+            } else if(numberOfBanana == 3){
+                points2n3.clear();
+                unavailablePoints2n3.clear();
+            } else if(numberOfBanana == 4){
+                points2n4.clear();
+                unavailablePoints2n4.clear();
+            }
         }
     }
 
@@ -772,30 +1030,52 @@ public class CompAlgorithm {
 
     private void makeUnPlaceInSidesVertical(String place, int sizeOfBanana, int numberOfBanana) {
         if (place.charAt(0) != 'а') { // left side
+            int num = Character.getNumericValue(place.charAt(1));
             char t = chars.get(chars.indexOf(place.charAt(0)) - 1);
-            String s = String.valueOf(t) + place.charAt(1);
-            if (s.length() == 3) s = s + place.charAt(2);
+            if(place.length() > 2) num = 10;
+            String s = String.valueOf(t) + num;
+          //  if (s.length() == 3) s = s + place.charAt(2);
 
-            if (sizeOfBanana == 6) {
-                unavailablePoints6.add(s);
-            }
+            if (sizeOfBanana == 6) unavailablePoints6.add(s);
+
             if (sizeOfBanana == 4) {
                 if (numberOfBanana == 1) unavailablePoints4.add(s);
                 else if (numberOfBanana == 2) unavailablePoints4n2.add(s);
+            } else if(sizeOfBanana == 3){
+                if(numberOfBanana == 1) unavailablePoints3n1.add(s);
+                else if(numberOfBanana == 2) unavailablePoints3n2.add(s);
+                else if(numberOfBanana == 3) unavailablePoints3n3.add(s);
+            } else if(sizeOfBanana == 2){
+                if(numberOfBanana == 1) unavailablePoints2n1.add(s);
+                else if(numberOfBanana == 2) unavailablePoints2n2.add(s);
+                else if(numberOfBanana == 3) unavailablePoints2n3.add(s);
+                else if(numberOfBanana == 4) unavailablePoints2n4.add(s);
             }
+
+
             System.out.println("UN 445-------------" + s);
         }
 
         if (place.charAt(0) != 'з') { // right side
             char t = chars.get(chars.indexOf(place.charAt(0)) + 1);
-            String s = String.valueOf(t) + place.charAt(1);
-            if (s.length() == 3) s = s + place.charAt(2);
-            if (sizeOfBanana == 6) {
-                unavailablePoints6.add(s);
-            }
+            int num = Character.getNumericValue(place.charAt(1));
+            if(place.length() > 2) num = 10;
+            String s = String.valueOf(t) + num;
+         //   if (s.length() == 3) s = s + place.charAt(2);
+            if (sizeOfBanana == 6) unavailablePoints6.add(s);
+
             if (sizeOfBanana == 4) {
                 if (numberOfBanana == 1) unavailablePoints4.add(s);
                 else if (numberOfBanana == 2) unavailablePoints4n2.add(s);
+            } else if(sizeOfBanana == 3){
+                if(numberOfBanana == 1) unavailablePoints3n1.add(s);
+                else if(numberOfBanana == 2) unavailablePoints3n2.add(s);
+                else if(numberOfBanana == 3) unavailablePoints3n3.add(s);
+            } else if(sizeOfBanana == 2){
+                if(numberOfBanana == 1) unavailablePoints2n1.add(s);
+                else if(numberOfBanana == 2) unavailablePoints2n2.add(s);
+                else if(numberOfBanana == 3) unavailablePoints2n3.add(s);
+                else if(numberOfBanana == 4) unavailablePoints2n4.add(s);
             }
             System.out.println("UN 456-------------" + s);
         }
