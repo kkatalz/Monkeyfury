@@ -103,8 +103,9 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(4, 1);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
                     placeBananas();
                 }
             }
@@ -129,8 +130,9 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(4, 2);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
                     placeBananas();
                 }
             }
@@ -156,8 +158,10 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(3, 1);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
+
                     placeBananas();
                 }
             }
@@ -182,8 +186,10 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(3, 2);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
+
                     placeBananas();
                 }
             }
@@ -209,8 +215,10 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(3, 3);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
+
                     placeBananas();
                 }
             }
@@ -236,8 +244,10 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 1);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
+
                     placeBananas();
                 }
             }
@@ -263,8 +273,9 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 2);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
                     placeBananas();
                 }
             }
@@ -292,8 +303,9 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 3);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
                     placeBananas();
                 }
             }
@@ -320,8 +332,9 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 4);
                 countUn++;
-                if(countUn > 200){
+                if(countUn >= 200){
                     clearEveryArray();
+                    setLogger();
                     placeBananas();
                 }
             }
@@ -1188,8 +1201,14 @@ public class CompAlgorithm {
             fileHandler.setFormatter(new SimpleFormatter());
 
             LOGGER.addHandler(fileHandler);
-            LOGGER.setLevel(Level.INFO);
-            LOGGER.info("Number of unsuccessful efforts to place a banana: " + String.valueOf(countUn));
+            if(countUn < 200){
+                LOGGER.setLevel(Level.INFO);
+                LOGGER.info("Number of unsuccessful efforts to place a banana: " + countUn);
+            } else {
+                LOGGER.setLevel(Level.WARNING);
+                LOGGER.warning("Number of unsuccessful efforts to place a banana was more than limit: " + countUn);
+            }
+
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "unexpected error");
         }
