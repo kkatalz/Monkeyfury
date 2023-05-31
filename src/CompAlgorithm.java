@@ -16,7 +16,10 @@ public class CompAlgorithm {
     public static void main(String[] args) {
         CompAlgorithm compAlgorithm = new CompAlgorithm();
         compAlgorithm.setup();
-        compAlgorithm.placeBananas();
+        boolean b;
+        do {
+            b = compAlgorithm.placeBananas();
+        } while(!b);
         compAlgorithm.setLogger();
     }
 
@@ -59,7 +62,7 @@ public class CompAlgorithm {
         chars.add('з');
     }
 
-    public void placeBananas() {
+    public boolean placeBananas() {
         Random random = new Random();
         // порахувати скільки невдалих спроб було розташувати банани
         countUn = 0;
@@ -106,7 +109,7 @@ public class CompAlgorithm {
                 if(countUn >= 200){
                     clearEveryArray();
                     setLogger();
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -133,7 +136,7 @@ public class CompAlgorithm {
                 if(countUn >= 200){
                     clearEveryArray();
                     setLogger();
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -162,7 +165,7 @@ public class CompAlgorithm {
                     clearEveryArray();
                     setLogger();
 
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -190,7 +193,7 @@ public class CompAlgorithm {
                     clearEveryArray();
                     setLogger();
 
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -219,7 +222,7 @@ public class CompAlgorithm {
                     clearEveryArray();
                     setLogger();
 
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -248,7 +251,7 @@ public class CompAlgorithm {
                     clearEveryArray();
                     setLogger();
 
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -276,7 +279,7 @@ public class CompAlgorithm {
                 if(countUn >= 200){
                     clearEveryArray();
                     setLogger();
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -306,7 +309,7 @@ public class CompAlgorithm {
                 if(countUn >= 200){
                     clearEveryArray();
                     setLogger();
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -335,7 +338,7 @@ public class CompAlgorithm {
                 if(countUn >= 200){
                     clearEveryArray();
                     setLogger();
-                    placeBananas();
+                    return false;
                 }
             }
         } while (!next);
@@ -369,7 +372,7 @@ public class CompAlgorithm {
         System.out.println(Arrays.toString(points2n4.toArray()));
         System.out.println("-" + Arrays.toString(unavailablePoints2n4.toArray()));
 
-
+        return true;
     }
 
     private void clearEveryArray() {
