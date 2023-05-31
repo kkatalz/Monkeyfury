@@ -652,7 +652,6 @@ public class CompAlgorithm {
         addPointsPlace_LeftDown_LeftUp_Left(s, sizeOfBanana, numberOfBanana);
 
         removeDuplicates(sizeOfBanana, numberOfBanana);
-        // вивести в консоль точки банана
         return true;
     }
 
