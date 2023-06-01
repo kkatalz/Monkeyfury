@@ -16,6 +16,8 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
+    private JLabel gameLevelLabel;
+    private JButton level1Button, level2Button, level3Button, start;
 
 
     private JPanel areaForUser, areaForComputer;
@@ -167,13 +169,13 @@ public class Frame extends JFrame {
         });
 
         //Choose level BUTTON
-        JLabel gameLevelLabel = new JLabel("Оберіть рівень гри: ");
+        gameLevelLabel = new JLabel("Оберіть рівень гри: ");
         gameLevelLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 35, PANEL_Y_FROM_TOP + 55, 350, 50);
         gameLevelLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
         backgroundPanel.add(gameLevelLabel);
 
         //level 1,2,3 BUTTONS
-        JButton level1Button = new JButton("1");
+        level1Button = new JButton("1");
         level1Button.setBackground(Color.white);
         level1Button.setForeground(Color.black);
         level1Button.setBounds(35 / 2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 50, PANEL_Y_FROM_TOP + 110, 45, 45);
@@ -182,7 +184,7 @@ public class Frame extends JFrame {
             levelOfGame = 1;
         });
 
-        JButton level2Button = new JButton("2");
+        level2Button = new JButton("2");
         level2Button.setBackground(Color.white);
         level2Button.setForeground(Color.black);
         level2Button.setBounds(35 / 2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 25, PANEL_Y_FROM_TOP + 120, 50, 50);
@@ -191,7 +193,7 @@ public class Frame extends JFrame {
             levelOfGame = 2;
         });
 
-        JButton level3Button = new JButton("3");
+        level3Button = new JButton("3");
         level3Button.setBackground(Color.white);
         level3Button.setForeground(Color.black);
         level3Button.setBounds(35 / 2 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 100, PANEL_Y_FROM_TOP + 110, 45, 45);
@@ -251,7 +253,7 @@ public class Frame extends JFrame {
 
 
         //START GAME BUTTON
-        JButton start = new JButton("START");
+        start = new JButton("START");
         start.setBackground(Color.white);
         start.setForeground(Color.black);
         start.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 25, PANEL_Y_FROM_TOP + 505, 155, 50);
@@ -273,9 +275,13 @@ public class Frame extends JFrame {
                 else numberOfSteps = 24;
                 showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
 
-
+                backgroundPanel.remove(start);
+                backgroundPanel.remove(level1Button);
+                backgroundPanel.remove(level2Button);
+                backgroundPanel.remove(level3Button);
+                backgroundPanel.remove(gameLevelLabel);
+                SwingUtilities.updateComponentTreeUI(backgroundPanel);
             }
-
 
         });
 
