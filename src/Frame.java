@@ -80,7 +80,7 @@ public class Frame extends JFrame {
         areaForComputer.setBackground(PANEL_BACKGROUND_COLOR);
         backgroundPanel.add(areaForComputer);
 
-        String[] monkeyfury = {"а", "б", "в", "г", "ґ", "д", "е", "є", "ж", "з"};
+        String[] monkeyfury = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
         int x = PANEL_X_FROM_BORDER + 10;
         int x2 = PANEL_FOR_FIGHT_WIDTH_HEIGHT + 3 * PANEL_X_FROM_BORDER + 10;
         JLabel[] horizontal = new JLabel[monkeyfury.length];
@@ -234,6 +234,7 @@ public class Frame extends JFrame {
         putBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 115, PANEL_Y_FROM_TOP + 425, 155, 50);
         backgroundPanel.add(putBanana);
 
+
         //CHOOSE BANANAS TYPE BUTTON
         JButton deleteBanana = new JButton("Прибрати банан");
         deleteBanana.setBackground(Color.white);
@@ -244,6 +245,22 @@ public class Frame extends JFrame {
         //Check if coordinates are written in correct format
         putBanana.addActionListener(e -> {
             checkFormatOfCoordinates();
+            String inputCoordinates = typeCoordinate.getText();
+            char letterInCoordinates = inputCoordinates.charAt(0);
+            int xCoordinate = (int) letterInCoordinates - 96;
+            int yCoordinate;
+            if (inputCoordinates.length() == 3 && inputCoordinates.charAt(1) == '1' && inputCoordinates.charAt(2) == '0') {
+                yCoordinate = 10;
+            } else if (inputCoordinates.length() == 2) {
+                yCoordinate = Integer.parseInt(String.valueOf(inputCoordinates.charAt(1)));
+            } else {
+                return;
+            }
+            System.out.println("X: " + xCoordinate + " Y: " + yCoordinate);
+            placeBanana(xCoordinate, yCoordinate);
+            typeCoordinate.setText("");
+
+
         });
         deleteBanana.addActionListener(e -> {
             checkFormatOfCoordinates();
@@ -279,22 +296,16 @@ public class Frame extends JFrame {
 
         });
 
-        placeBanana(0,0);
-        placeBanana(BANANA_WIDTH,BANANA_WIDTH);
-        placeBanana(2*BANANA_WIDTH,2*BANANA_WIDTH);
-
-
-
 
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
     }
 
-    public void placeBanana(int x, int y){
+    public void placeBanana(int x, int y) {
         JPanel panel = new JPanel();
 
         panel.setLayout(null); // Set the layout manager to null for absolute positioning
-        panel.setBounds(x, y, 40, 40);
+        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
         String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
@@ -306,14 +317,19 @@ public class Frame extends JFrame {
         panel.add(label); // Add the label to the panel
 
         areaForUser.setLayout(null);
-
         areaForUser.add(panel);
+
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
+
     }
 
 
     //Check if coordinates are written in correct format
     public void checkFormatOfCoordinates() {
         String inputCoordinates = typeCoordinate.getText();
+
+        System.out.println(inputCoordinates.length());
+
         if (inputCoordinates.isEmpty() || inputCoordinates == null) {
             JOptionPane.showMessageDialog(backgroundPanel, "Заповніть координати ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
@@ -322,20 +338,29 @@ public class Frame extends JFrame {
 
         } else if (!Character.isLetter(inputCoordinates.charAt(0))) {
             JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Перший символ має бути літерою", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } else if (inputCoordinates.length() == 3) {
+        }
+        else if (inputCoordinates.length() == 3) {
             if (!Character.isDigit(inputCoordinates.charAt(1)) || !Character.isDigit(inputCoordinates.charAt(2))) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий й третій символи мають бути цифрами. ", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (inputCoordinates.charAt(1) != '1' && inputCoordinates.charAt(2) != '0') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути '1', а другий = '0 '. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-            } else if (inputCoordinates.charAt(1) != '1') {
+            }
+            else if (((int) inputCoordinates.charAt(0) - 96 > 10) && inputCoordinates.charAt(1) != '1' && inputCoordinates.charAt(2) != '0') {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br>Перший символ має бути літерою до 'j'. Другий символ має бути '1', а третій = '0 '. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            }
+            else if (inputCoordinates.charAt(1) != '1') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути '1'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (inputCoordinates.charAt(2) != '0') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Третій символ має бути '0'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
             }
-        } else if (inputCoordinates.length() == 2) {
-            if (!Character.isDigit(inputCoordinates.charAt(1))) {
+        } else if (inputCoordinates.length() == 2) {,
+            if (((int) inputCoordinates.charAt(0) - 96 > 10) ) {
+                JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br>Перший символ має бути літерою до 'j' ", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (!Character.isDigit(inputCoordinates.charAt(1))) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути цифрою. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
             }
@@ -343,7 +368,6 @@ public class Frame extends JFrame {
             JOptionPane.showMessageDialog(backgroundPanel, "У координаті не може бути більше трьох символів ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
         }
-        typeCoordinate.setText("");
     }
 
 
@@ -359,7 +383,7 @@ public class Frame extends JFrame {
             //Path
             // liza: /home/liza/Downloads/beach.jpeg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/Downloads/beach.jpeg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
         }
 
         @Override
