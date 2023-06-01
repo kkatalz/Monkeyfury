@@ -23,6 +23,15 @@ public class CompAlgorithm {
         compAlgorithm.setLogger();
     }
 
+    CompAlgorithm (){
+        setup();
+        boolean b;
+        do {
+            b = placeBananas();
+        } while(!b);
+        setLogger();
+    }
+
     private void setup() {
         numbers = new ArrayList<>();
         chars = new ArrayList<>();
