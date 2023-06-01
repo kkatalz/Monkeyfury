@@ -1,5 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Frame extends JFrame {
 
@@ -10,7 +14,8 @@ public class Frame extends JFrame {
     public static final int PANEL_FOR_FIGHT_WIDTH_HEIGHT = 400;
     public static final int PANEL_Y_FROM_TOP = 50;
     public static final int PANEL_X_FROM_BORDER = 40;
-    public static final Color PANEL_BACKGROUND_COLOR = Color.LIGHT_GRAY;
+    public static final Color PANEL_BACKGROUND_COLOR = Color.white;
+    public byte BANANA_WIDTH = 40;
 
 
     private JPanel areaForUser, areaForComputer;
@@ -274,10 +279,37 @@ public class Frame extends JFrame {
 
         });
 
+        placeBanana(0,0);
+        placeBanana(BANANA_WIDTH,BANANA_WIDTH);
+        placeBanana(2*BANANA_WIDTH,2*BANANA_WIDTH);
+
+
+
 
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
     }
+
+    public void placeBanana(int x, int y){
+        JPanel panel = new JPanel();
+
+        panel.setLayout(null); // Set the layout manager to null for absolute positioning
+        panel.setBounds(x, y, 40, 40);
+
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpg";
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(scaledIcon);
+        label.setBounds(0, 0, 40, 40); // Manually set the bounds of the label
+
+        panel.add(label); // Add the label to the panel
+
+        areaForUser.setLayout(null);
+
+        areaForUser.add(panel);
+    }
+
 
     //Check if coordinates are written in correct format
     public void checkFormatOfCoordinates() {
