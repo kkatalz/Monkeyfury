@@ -313,7 +313,8 @@ public class Frame extends JFrame {
         panel.setLayout(null); // Set the layout manager to null for absolute positioning
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpg";
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -362,7 +363,7 @@ public class Frame extends JFrame {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Третій символ має бути '0'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
             }
-        } else if (inputCoordinates.length() == 2) {,
+        } else if (inputCoordinates.length() == 2) {
             if (((int) inputCoordinates.charAt(0) - 96 > 10) ) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br>Перший символ має бути літерою до 'j' ", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -389,7 +390,7 @@ public class Frame extends JFrame {
             //Path
             // liza: /home/liza/Downloads/beach.jpeg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/Downloads/beach.jpeg");
         }
 
         @Override
