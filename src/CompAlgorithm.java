@@ -23,6 +23,15 @@ public class CompAlgorithm {
         compAlgorithm.setLogger();
     }
 
+    CompAlgorithm (){
+        setup();
+        boolean b;
+        do {
+            b = placeBananas();
+        } while(!b);
+        setLogger();
+    }
+
     private void setup() {
         numbers = new ArrayList<>();
         chars = new ArrayList<>();
@@ -50,16 +59,17 @@ public class CompAlgorithm {
         for (int i = 1; i < 11; i++) {
             numbers.add(i);
         }
-        chars.add('а');
-        chars.add('б');
-        chars.add('в');
-        chars.add('г');
-        chars.add('ґ');
-        chars.add('д');
-        chars.add('е');
-        chars.add('є');
-        chars.add('ж');
-        chars.add('з');
+        chars.add('a');
+        chars.add('b');
+        chars.add('c');
+        chars.add('d');
+        chars.add('e');
+        chars.add('f');
+        chars.add('g');
+        chars.add('h');
+        chars.add('i');
+        chars.add('j');
+        // "a", "b", "c", "d", "e", "f", "g", "h", "i", "j"
     }
 
     public boolean placeBananas() {
@@ -658,7 +668,7 @@ public class CompAlgorithm {
     private String makeUnPlaceRight(String s) {
         int i = Character.getNumericValue(s.charAt(1));
         if (s.length() > 2) i = 10;
-        if (s.charAt(0) == 'з') return "";
+        if (s.charAt(0) == 'j') return "";
         char ch = chars.get(chars.indexOf(s.charAt(0)) + 1);
         String str = String.valueOf(ch) + i;
         return str;
@@ -668,7 +678,7 @@ public class CompAlgorithm {
         char ch;
         int i = Character.getNumericValue(s.charAt(1));
         if (s.length() > 2) i = 10;
-        if (i == 0 || s.charAt(0) == 'а') return "";
+        if (i == 0 || s.charAt(0) == 'a') return "";
         ch = chars.get(chars.indexOf(s.charAt(0)) - 1);
         return String.valueOf(ch) + i;
     }
@@ -1081,7 +1091,7 @@ public class CompAlgorithm {
     }
 
     private void makeUnPlaceInSidesVertical(String place, int sizeOfBanana, int numberOfBanana) {
-        if (place.charAt(0) != 'а') { // left side
+        if (place.charAt(0) != 'a') { // left side
             int num = Character.getNumericValue(place.charAt(1));
             char t = chars.get(chars.indexOf(place.charAt(0)) - 1);
             if (place.length() > 2) num = 10;
@@ -1107,7 +1117,7 @@ public class CompAlgorithm {
 
         }
 
-        if (place.charAt(0) != 'з') { // right side
+        if (place.charAt(0) != 'j') { // right side
             char t = chars.get(chars.indexOf(place.charAt(0)) + 1);
             int num = Character.getNumericValue(place.charAt(1));
             if (place.length() > 2) num = 10;
@@ -1135,7 +1145,7 @@ public class CompAlgorithm {
     private String makeUnPlaceLeftUp(String place) { // зліва зверху, returns place which has to be unavailable
         int num = Integer.parseInt(String.valueOf(place.charAt(1)));
         if (place.length() > 2) num = 10;
-        if (place.charAt(0) != 'а' && num != 1) {
+        if (place.charAt(0) != 'a' && num != 1) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) - 1);
             num--;
             return String.valueOf(ch) + num;
@@ -1146,7 +1156,7 @@ public class CompAlgorithm {
     private String makeUnPlaceLeftDown(String place) { // зліва знизу
         int num = Integer.parseInt(String.valueOf(place.charAt(1)));
         if (place.length() > 2) num = 10;
-        if (place.charAt(0) != 'а' && num != 10) {
+        if (place.charAt(0) != 'a' && num != 10) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) - 1);
             num++;
             return String.valueOf(ch) + num;
@@ -1157,7 +1167,7 @@ public class CompAlgorithm {
     private String makeUnPlaceRightUp(String place) { // справа згори
         int num = Integer.parseInt(String.valueOf(place.charAt(1)));
         if (place.length() > 2) num = 10;
-        if (place.charAt(0) != 'з' && num != 1) {
+        if (place.charAt(0) != 'j' && num != 1) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) + 1);
             num--;
             return String.valueOf(ch) + num;
@@ -1168,7 +1178,7 @@ public class CompAlgorithm {
     private String makeUnPlaceRightDown(String place) { // справа знизу
         int num = Integer.parseInt(String.valueOf(place.charAt(1)));
         if (place.length() > 2) num = 10;
-        if (place.charAt(0) != 'з' && num != 10) {
+        if (place.charAt(0) != 'j' && num != 10) {
             char ch = chars.get(chars.indexOf(place.charAt(0)) + 1);
             num++;
             return String.valueOf(ch) + num;
@@ -1210,9 +1220,43 @@ public class CompAlgorithm {
                 LOGGER.setLevel(Level.WARNING);
                 LOGGER.warning("Number of unsuccessful efforts to place a banana was more than limit: " + countUn);
             }
-
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "unexpected error");
         }
+    }
+
+    // перевірити чи є банан на карті комп'ютера
+    public String isABanana(String s) {
+        for (String value : points6) {
+            if (s.equals(value)) return "6";
+        }
+        for (String value : points4) {
+            if (s.equals(value)) return "41";
+        }
+        for (String value : points4n2) {
+            if (s.equals(value)) return "42";
+        }
+        for (String value : points3n1) {
+            if (s.equals(value)) return "31";
+        }
+        for (String value : points3n2) {
+            if (s.equals(value)) return "32";
+        }
+        for (String value : points3n3) {
+            if (s.equals(value)) return "33";
+        }
+        for (String value : points2n1) {
+            if (s.equals(value)) return "21";
+        }
+        for (String value : points2n2) {
+            if (s.equals(value)) return "22";
+        }
+        for (String value : points2n3) {
+            if (s.equals(value)) return "23";
+        }
+        for (String value : points2n4) {
+            if (s.equals(value)) return "24";
+        }
+        return "";
     }
 }

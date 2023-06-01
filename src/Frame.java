@@ -1,9 +1,12 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Frame extends JFrame {
 
@@ -16,25 +19,38 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel;
-    private JButton level1Button, level2Button, level3Button, start;
-
+    private JLabel gameLevelLabel, bananasType, informationForUser;
+    private JButton level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
+    private JComboBox<String> listOfBananas;
 
     private JPanel areaForUser, areaForComputer;
     private JTextField typeCoordinate;
     private BackgroundPanel backgroundPanel;
+    private CompAlgorithm compAlgorithm;
+    private ArrayList<String> shootedPlaces = new ArrayList<>();
+
 
     Frame() {
+        compAlgorithm = new CompAlgorithm();
+
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         showAreasForFight();
+
 
     }
 
     public void showAreasForFight() {
         backgroundPanel = new BackgroundPanel();
         this.setContentPane(backgroundPanel);
+
+        informationForUser = new JLabel();
+        informationForUser.setBounds(PANEL_X_FROM_BORDER, FRAME_HEIGHT -140, 500, 50);
+        informationForUser.setForeground(Color.white);
+        informationForUser.setFont(new Font("f", Font.PLAIN, 17));
+        backgroundPanel.add(informationForUser);
+
         areaForUser = new JPanel() {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -203,14 +219,14 @@ public class Frame extends JFrame {
         });
 
         //CHOOSE BANANAS TYPE LABEL
-        JLabel bananasType = new JLabel("Оберіть тип банана ");
+        bananasType = new JLabel("Оберіть тип банана ");
         bananasType.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 25, PANEL_Y_FROM_TOP + 190, 350, 50);
         bananasType.setFont(new Font("Calibri", Font.PLAIN, 20));
         backgroundPanel.add(bananasType);
 
         //LIST OF BANANAS TYPE BUTTON
         String[] choices = {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
-        JComboBox<String> listOfBananas = new JComboBox(choices);
+        listOfBananas = new JComboBox(choices);
         listOfBananas.setBackground(Color.white);
         listOfBananas.setForeground(Color.black);
         listOfBananas.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 15, PANEL_Y_FROM_TOP + 270, 135, 40);
@@ -230,7 +246,7 @@ public class Frame extends JFrame {
         backgroundPanel.add(typeCoordinate);
 
         //CHOOSE BANANAS TYPE BUTTON
-        JButton putBanana = new JButton("Поставити банан");
+        putBanana = new JButton("Поставити банан");
         putBanana.setBackground(Color.white);
         putBanana.setForeground(Color.black);
         putBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 115, PANEL_Y_FROM_TOP + 425, 155, 50);
@@ -238,11 +254,21 @@ public class Frame extends JFrame {
 
 
         //CHOOSE BANANAS TYPE BUTTON
-        JButton deleteBanana = new JButton("Прибрати банан");
+        deleteBanana = new JButton("Прибрати банан");
         deleteBanana.setBackground(Color.white);
         deleteBanana.setForeground(Color.black);
         deleteBanana.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT + 70, PANEL_Y_FROM_TOP + 425, 155, 50);
         backgroundPanel.add(deleteBanana);
+
+        // button to shoot with coordinates
+        shootButton = new JButton("Вистрілити");
+        shootButton.setBackground(Color.WHITE);
+        shootButton.setForeground(Color.BLACK);
+        shootButton.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT -20, PANEL_Y_FROM_TOP + 425, 155, 50);
+        shootButton.addActionListener(e -> {
+            toShoot();
+            typeCoordinate.setText("");
+        });
 
         //Check if coordinates are written in correct format
         putBanana.addActionListener(e -> {
@@ -297,14 +323,103 @@ public class Frame extends JFrame {
                 backgroundPanel.remove(level2Button);
                 backgroundPanel.remove(level3Button);
                 backgroundPanel.remove(gameLevelLabel);
+                backgroundPanel.remove(putBanana);
+                backgroundPanel.remove(deleteBanana);
+                backgroundPanel.remove(bananasType);
+                backgroundPanel.remove(listOfBananas);
+                backgroundPanel.add(shootButton);
                 SwingUtilities.updateComponentTreeUI(backgroundPanel);
+
             }
 
         });
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
+    }
+
+    // дії у разі вистрілу користувачем
+    private void toShoot() {
+        if(!checkFormatOfCoordinatesForShooting()) {
+            JOptionPane.showMessageDialog(backgroundPanel, "Невірно введені координати або задані координати були задані раніше", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String stringCoordinates = typeCoordinate.getText();
+        // додати текст про результат (користува влучив чи ні) (jLabel)
+
+        // дізнатися, чи користувач влучив у банан
+        String check = compAlgorithm.isABanana(stringCoordinates);
+        boolean res;
+        if(check.equals(""))  {
+            res = false;
+            informationForUser.setText("Ви не влучили у банан!");
+        }
+        else {
+            res = true;
+            // змінити формулювання
+            informationForUser.setText("Ви влучили у " + check.charAt(0) + " - палубний банан!");
+        }
+        char letter = stringCoordinates.charAt(0);
+        int x = (int) letter - 96;
+        int y = Character.getNumericValue(stringCoordinates.charAt(1));
+        if(stringCoordinates.length() == 3) y = 10;
+        if(!res) placeBananaInComputerArea(x, y, false);
+        else placeBananaInComputerArea(x, y, true);
+    }
+
+    private void placeBananaInComputerArea(int x, int y, boolean result) { // result - true, якщо там був банан
+        JPanel panel = new JPanel();
+
+        panel.setLayout(null); // Set the layout manager to null for absolute positioning
+        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
+
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
+        String imagePath;
+        if(result)  {
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
+        }
+        else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(scaledIcon);
+        label.setBounds(0, 0, 40, 40);
+
+        panel.add(label); // Add the label to the panel
+
+        areaForComputer.setLayout(null);
+        areaForComputer.add(panel);
 
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
+    }
+
+    private boolean checkFormatOfCoordinatesForShooting() {
+      //  typeCoordinate
+        String s = typeCoordinate.getText();
+
+        for(int i =0; i < shootedPlaces.size(); i++){
+            if(s.equals(shootedPlaces.get(i))){
+                return false;
+            }
+        }
+        if (s.length() > 0) {
+            char firstChar = Character.toLowerCase(s.charAt(0));
+            if(!(firstChar >= 'a')) return false;
+            if(!(firstChar <= 'j')) return false;
+        }
+        int n = Character.getNumericValue(s.charAt(1));
+
+        if(!(n >= 1 && n <= 10)) return false;
+
+        if(s.length() == 3){
+            if(!(s.charAt(1) == '1')) return false;
+            if(!(s.charAt(2) == '0')) return false;
+            else n = 10;
+        }
+        shootedPlaces.add(s);
+        return true;
     }
 
     public void placeBanana(int x, int y) {
@@ -313,7 +428,8 @@ public class Frame extends JFrame {
         panel.setLayout(null); // Set the layout manager to null for absolute positioning
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpg";
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -362,7 +478,7 @@ public class Frame extends JFrame {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Третій символ має бути '0'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
             }
-        } else if (inputCoordinates.length() == 2) {,
+        } else if (inputCoordinates.length() == 2) {
             if (((int) inputCoordinates.charAt(0) - 96 > 10) ) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br>Перший символ має бути літерою до 'j' ", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -377,8 +493,11 @@ public class Frame extends JFrame {
     }
 
 
+
+
     public static void main(String[] args) {
         new Frame();
+
     }
 
     private static class BackgroundPanel extends JPanel {
@@ -389,7 +508,7 @@ public class Frame extends JFrame {
             //Path
             // liza: /home/liza/Downloads/beach.jpeg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/Downloads/beach.jpeg");
         }
 
         @Override
