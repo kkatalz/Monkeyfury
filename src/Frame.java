@@ -19,7 +19,7 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser;
+    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel;
     private JButton level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
     private JComboBox<String> listOfBananas;
 
@@ -304,7 +304,7 @@ public class Frame extends JFrame {
         backgroundPanel.add(start);
 
         //check if game level is chosen
-        JLabel showGameLevel = new JLabel();
+        showGameLevel = new JLabel();
         showGameLevel.setBounds(25, FRAME_HEIGHT - 205, 350, 50);
         showGameLevel.setForeground(Color.white);
         showGameLevel.setFont(new Font("Calibri", Font.PLAIN, 25));
@@ -351,7 +351,9 @@ public class Frame extends JFrame {
         boolean res;
         if(check.equals(""))  {
             res = false;
-            informationForUser.setText("Ви не влучили у банан!");
+            informationForUser.setText("Ви не влучили в кошик з бананами!");
+            numberOfSteps--;
+            showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
         }
         else {
             res = true;
