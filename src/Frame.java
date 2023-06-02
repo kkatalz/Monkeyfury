@@ -19,13 +19,13 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel;
+    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel, happyMonkeyLabel, angryMonkeyLabel, monkeyLabel;
     private JButton level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
     private JComboBox<String> listOfBananas;
 
     private JPanel areaForUser, areaForComputer;
     private JTextField typeCoordinate;
-    private BackgroundPanel backgroundPanel;
+    public BackgroundPanel backgroundPanel;
     private CompAlgorithm compAlgorithm;
     private ArrayList<String> shootedPlaces = new ArrayList<>();
     private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4;
@@ -60,8 +60,8 @@ public class Frame extends JFrame {
         this.setContentPane(backgroundPanel);
 
         informationForUser = new JLabel();
-        informationForUser.setBounds(PANEL_X_FROM_BORDER, FRAME_HEIGHT - 140, 500, 50);
-        informationForUser.setForeground(Color.white);
+        informationForUser.setBounds(FRAME_WIDTH - 340, 200, 500, 50);
+        informationForUser.setForeground(Color.black);
         informationForUser.setFont(new Font("f", Font.PLAIN, 17));
         backgroundPanel.add(informationForUser);
 
@@ -341,7 +341,7 @@ public class Frame extends JFrame {
             } else {
                 return;
             }
-            removeBanana(xCoordinate,yCoordinate);
+            removeBanana(xCoordinate, yCoordinate);
         });
 
 
@@ -388,6 +388,8 @@ public class Frame extends JFrame {
     }
 
     // дії у разі вистрілу користувачем
+
+
     private void toShoot() {
         if (!checkFormatOfCoordinatesForShooting()) {
             JOptionPane.showMessageDialog(backgroundPanel, "Невірно введені координати або задані координати були задані раніше", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -403,11 +405,42 @@ public class Frame extends JFrame {
             informationForUser.setText("Ви не влучили в кошик з бананами!");
             numberOfSteps--;
             showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
+
+            // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
+            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+            ImageIcon icon = new ImageIcon(imagePath);
+            Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+            // Remove previous monkey label, if any
+            if (monkeyLabel != null) {
+                backgroundPanel.remove(monkeyLabel);
+            }
+
+            monkeyLabel = new JLabel(scaledIcon);
+            monkeyLabel.setBounds(FRAME_WIDTH - 260, 130, 80, 80);
+            backgroundPanel.add(monkeyLabel);
+
         } else {
             res = true;
-            if (!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
-            else informationForUser.setText("Ви знайшли увесь кошик з бананами!");
+            informationForUser.setText("Ви влучили у кошик з бананами!");
+
+            // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
+            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+            ImageIcon icon = new ImageIcon(imagePath);
+            Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+            // Remove previous monkey label, if any
+            if (monkeyLabel != null) {
+                backgroundPanel.remove(monkeyLabel);
+            }
+
+            monkeyLabel = new JLabel(scaledIcon);
+            monkeyLabel.setBounds(FRAME_WIDTH - 260, 130, 80, 80);
+            backgroundPanel.add(monkeyLabel);
         }
+
         char letter = stringCoordinates.charAt(0);
         int x = (int) letter - 96;
         int y = Character.getNumericValue(stringCoordinates.charAt(1));
@@ -415,6 +448,7 @@ public class Frame extends JFrame {
         if (!res) placeBananaInComputerArea(x, y, false);
         else placeBananaInComputerArea(x, y, true);
     }
+
 
     // змінити значення відповідної змінної
     private boolean makeStatistics(String s) { // повертає false, якщо користувач ще не збив увесь банан
@@ -673,6 +707,17 @@ public class Frame extends JFrame {
 
         }
     }
+
+//    public void addMonkeyImage(String imagePath ){
+//
+//        ImageIcon icon = new ImageIcon(imagePath);
+//        Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+//        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+//        JLabel label = new JLabel(scaledIcon);
+//        label.setBounds(FRAME_WIDTH - 260, 130, 80, 80);
+//
+//        backgroundPanel.add(label);
+//    }
 
 
     public static void main(String[] args) {
