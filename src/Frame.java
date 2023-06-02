@@ -29,10 +29,20 @@ public class Frame extends JFrame {
     private CompAlgorithm compAlgorithm;
     private ArrayList<String> shootedPlaces = new ArrayList<>();
     private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4;
+    int BOARD_WIDTH = 10;
+    int BOARD_HEIGHT = 10;
+
+
+    boolean[][] availableCells = new boolean[10][10];
 
 
     Frame() {
         compAlgorithm = new CompAlgorithm();
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_HEIGHT; y++) {
+                availableCells[x][y] = true;
+            }
+        }
 
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +57,7 @@ public class Frame extends JFrame {
         this.setContentPane(backgroundPanel);
 
         informationForUser = new JLabel();
-        informationForUser.setBounds(PANEL_X_FROM_BORDER, FRAME_HEIGHT -140, 500, 50);
+        informationForUser.setBounds(PANEL_X_FROM_BORDER, FRAME_HEIGHT - 140, 500, 50);
         informationForUser.setForeground(Color.white);
         informationForUser.setFont(new Font("f", Font.PLAIN, 17));
         backgroundPanel.add(informationForUser);
@@ -265,7 +275,7 @@ public class Frame extends JFrame {
         shootButton = new JButton("Вистрілити");
         shootButton.setBackground(Color.WHITE);
         shootButton.setForeground(Color.BLACK);
-        shootButton.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT -20, PANEL_Y_FROM_TOP + 425, 155, 50);
+        shootButton.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 20, PANEL_Y_FROM_TOP + 425, 155, 50);
         shootButton.addActionListener(e -> {
             toShoot();
             typeCoordinate.setText("");
@@ -285,6 +295,25 @@ public class Frame extends JFrame {
             } else {
                 return;
             }
+//            {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
+            int deckerAmount = 1;
+            int times = 1;
+            int chosenItem = listOfBananas.getSelectedIndex();
+
+            if (chosenItem == 1) {
+                deckerAmount = 2;
+                times = 4;
+            } else if (chosenItem == 2) {
+                deckerAmount = 3;
+                times = 3;
+            } else if (chosenItem == 3) {
+                deckerAmount = 4;
+                times = 2;
+            } else if (chosenItem == 4) {
+                deckerAmount = 6;
+                times = 1;
+            }
+
             System.out.println("X: " + xCoordinate + " Y: " + yCoordinate);
             placeBanana(xCoordinate, yCoordinate);
             typeCoordinate.setText("");
@@ -340,7 +369,7 @@ public class Frame extends JFrame {
 
     // дії у разі вистрілу користувачем
     private void toShoot() {
-        if(!checkFormatOfCoordinatesForShooting()) {
+        if (!checkFormatOfCoordinatesForShooting()) {
             JOptionPane.showMessageDialog(backgroundPanel, "Невірно введені координати або задані координати були задані раніше", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -349,58 +378,63 @@ public class Frame extends JFrame {
         // дізнатися, чи користувач влучив у банан
         String check = compAlgorithm.isABanana(stringCoordinates);
         boolean res;
-        if(check.equals(""))  {
+        if (check.equals("")) {
             res = false;
             informationForUser.setText("Ви не влучили в кошик з бананами!");
             numberOfSteps--;
             showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
-        }
-        else {
+        } else {
             res = true;
-            if(!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
+            if (!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
             else informationForUser.setText("Ви знайшли увесь кошик з бананами!");
         }
         char letter = stringCoordinates.charAt(0);
         int x = (int) letter - 96;
         int y = Character.getNumericValue(stringCoordinates.charAt(1));
-        if(stringCoordinates.length() == 3) y = 10;
-        if(!res) placeBananaInComputerArea(x, y, false);
+        if (stringCoordinates.length() == 3) y = 10;
+        if (!res) placeBananaInComputerArea(x, y, false);
         else placeBananaInComputerArea(x, y, true);
     }
 
     // змінити значення відповідної змінної
     private boolean makeStatistics(String s) { // повертає false, якщо користувач ще не збив увесь банан
-        if(s.charAt(0) == '6'){
+        if (s.charAt(0) == '6') {
             p6++;
             return p6 == 6;
         }
 
-        if(s.charAt(0) == '4'){
-            if(s.charAt(1) == '1'){
+        if (s.charAt(0) == '4') {
+            if (s.charAt(1) == '1') {
                 p4++;
                 return p4 == 4;
-            } else if(s.charAt(1) == '2'){
+            } else if (s.charAt(1) == '2') {
                 p4n2++;
                 return p4n2 == 4;
             }
-        } else if(s.charAt(0) == '3'){
-            if(s.charAt(1) == '1'){
-                p3n1++; return p3n1 == 3;
-            } else if(s.charAt(1) == '2'){
-                p3n2++; return p3n2 == 3;
-            }else if(s.charAt(1) == '3'){
-                p3n3++; return p3n3 == 3;
+        } else if (s.charAt(0) == '3') {
+            if (s.charAt(1) == '1') {
+                p3n1++;
+                return p3n1 == 3;
+            } else if (s.charAt(1) == '2') {
+                p3n2++;
+                return p3n2 == 3;
+            } else if (s.charAt(1) == '3') {
+                p3n3++;
+                return p3n3 == 3;
             }
-        }
-        else if(s.charAt(0) ==  '2'){
-            if(s.charAt(1) == '1'){
-                p2n1++; return p2n1 == 2;
-            } else if(s.charAt(1) == '2'){
-                p2n2++; return p2n2 == 2;
-            } else if(s.charAt(1) == '3'){
-                p2n3++; return p2n3 == 2;
-            } else if(s.charAt(1) == '4'){
-                p2n4++; return p2n4 == 2;
+        } else if (s.charAt(0) == '2') {
+            if (s.charAt(1) == '1') {
+                p2n1++;
+                return p2n1 == 2;
+            } else if (s.charAt(1) == '2') {
+                p2n2++;
+                return p2n2 == 2;
+            } else if (s.charAt(1) == '3') {
+                p2n3++;
+                return p2n3 == 2;
+            } else if (s.charAt(1) == '4') {
+                p2n4++;
+                return p2n4 == 2;
             }
         }
         return false;
@@ -415,10 +449,14 @@ public class Frame extends JFrame {
 
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
+
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
+
         String imagePath;
-        if(result)  {
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
-        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+        if (result) {
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -436,57 +474,132 @@ public class Frame extends JFrame {
     }
 
     private boolean checkFormatOfCoordinatesForShooting() {
-      //  typeCoordinate
+        //  typeCoordinate
         String s = typeCoordinate.getText();
 
-        for(int i =0; i < shootedPlaces.size(); i++){
-            if(s.equals(shootedPlaces.get(i))){
+        for (int i = 0; i < shootedPlaces.size(); i++) {
+            if (s.equals(shootedPlaces.get(i))) {
                 return false;
             }
         }
         if (s.length() > 0) {
             char firstChar = Character.toLowerCase(s.charAt(0));
-            if(!(firstChar >= 'a')) return false;
-            if(!(firstChar <= 'j')) return false;
+            if (!(firstChar >= 'a')) return false;
+            if (!(firstChar <= 'j')) return false;
         }
         int n = Character.getNumericValue(s.charAt(1));
 
-        if(!(n >= 1 && n <= 10)) return false;
+        if (!(n >= 1 && n <= 10)) return false;
 
-        if(s.length() == 3){
-            if(!(s.charAt(1) == '1')) return false;
-            if(!(s.charAt(2) == '0')) return false;
+        if (s.length() == 3) {
+            if (!(s.charAt(1) == '1')) return false;
+            if (!(s.charAt(2) == '0')) return false;
             else n = 10;
         }
         shootedPlaces.add(s);
         return true;
     }
 
-    public void placeBanana(int x, int y) {
-        JPanel panel = new JPanel();
+//    public void placeBanana(int x, int y) {
+//        JPanel panel = new JPanel();
+//
+//        panel.setLayout(null); // Set the layout manager to null for absolute positioning
+//        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
+//
+//        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+//        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+//
+//        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+//        ImageIcon icon = new ImageIcon(imagePath);
+//        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+//        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+//        JLabel label = new JLabel(scaledIcon);
+//        label.setBounds(0, 0, 40, 40); // Manually set the bounds of the label
+//
+//        panel.add(label); // Add the label to the panel
+//
+//        areaForUser.setLayout(null);
+//        areaForUser.add(panel);
+//
+//        SwingUtilities.updateComponentTreeUI(backgroundPanel);
+//
+//    }
 
-        panel.setLayout(null); // Set the layout manager to null for absolute positioning
+
+    //placing banana on the user's map
+    public void placeBanana(int x, int y) {
+        if (!availableCells[x][y]) {
+            JOptionPane.showMessageDialog(backgroundPanel, "Ви не можете ставити банан так,щоб він торкався іншого", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Add the banana image to the made panel
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
+
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
-        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel label = new JLabel(scaledIcon);
-        label.setBounds(0, 0, 40, 40); // Manually set the bounds of the label
-
-        panel.add(label); // Add the label to the panel
-
+        label.setBounds(0, 0, 40, 40);
+        panel.add(label);
         areaForUser.setLayout(null);
         areaForUser.add(panel);
 
-        SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
+// mark adjacent cells as unavailable
+
+        if (!((x == 0 && y == 0) || (x == 0 && y == BOARD_HEIGHT - 1) ||
+                (x == BOARD_WIDTH - 1 && y == 0) || (x == BOARD_WIDTH - 1 && y ==
+                BOARD_HEIGHT - 1))) {
+            availableCells[x][y] = false;
+        }
+        if (x > 0 && !(x == 1 && (y == 0 || y == BOARD_HEIGHT - 1))) {
+            availableCells[x - 1][y] = false;
+            if (y > 0) {
+                availableCells[x - 1][y - 1] = false;
+            }
+            if (y < BOARD_HEIGHT - 1) {
+                availableCells[x - 1][y + 1] = false;
+            }
+        }
+        if (x < BOARD_WIDTH - 1 && !(x == BOARD_WIDTH - 2 && (y == 0 || y == BOARD_HEIGHT - 1))) {
+            availableCells[x + 1][y] = false;
+            if (y > 0) {
+                availableCells[x + 1][y - 1] = false;
+            }
+            if (y < BOARD_HEIGHT - 1) {
+                availableCells[x + 1][y + 1] = false;
+            }
+        }
+        if (y > 0 && !(y == 1 && (x == 0 || x == BOARD_WIDTH - 1))) {
+            availableCells[x][y - 1] = false;
+            if (x > 0) {
+                availableCells[x - 1][y - 1] = false;
+            }
+            if (x < BOARD_WIDTH - 1) {
+                availableCells[x + 1][y - 1] = false;
+            }
+        }
+        if (y < BOARD_HEIGHT - 1 && !(y == BOARD_HEIGHT - 2 && (x == 0 || x == BOARD_WIDTH - 1))) {
+            availableCells[x][y + 1] = false;
+            if (x > 0) {
+                availableCells[x - 1][y + 1] = false;
+            }
+            if (x < BOARD_WIDTH - 1) {
+                availableCells[x + 1][y + 1] = false;
+            }
+        }
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
     }
 
 
-    //Check if coordinates are written in correct format
+    //Check if coordinates are written in correct format on the user's map
     public void checkFormatOfCoordinates() {
         String inputCoordinates = typeCoordinate.getText();
 
@@ -500,29 +613,25 @@ public class Frame extends JFrame {
 
         } else if (!Character.isLetter(inputCoordinates.charAt(0))) {
             JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Перший символ має бути літерою", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if (inputCoordinates.length() == 3) {
+        } else if (inputCoordinates.length() == 3) {
             if (!Character.isDigit(inputCoordinates.charAt(1)) || !Character.isDigit(inputCoordinates.charAt(2))) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий й третій символи мають бути цифрами. ", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (inputCoordinates.charAt(1) != '1' && inputCoordinates.charAt(2) != '0') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути '1', а другий = '0 '. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-            }
-            else if (((int) inputCoordinates.charAt(0) - 96 > 10) && inputCoordinates.charAt(1) != '1' && inputCoordinates.charAt(2) != '0') {
+            } else if (((int) inputCoordinates.charAt(0) - 96 > 10) && inputCoordinates.charAt(1) != '1' && inputCoordinates.charAt(2) != '0') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br>Перший символ має бути літерою до 'j'. Другий символ має бути '1', а третій = '0 '. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-            }
-            else if (inputCoordinates.charAt(1) != '1') {
+            } else if (inputCoordinates.charAt(1) != '1') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути '1'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (inputCoordinates.charAt(2) != '0') {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Третій символ має бути '0'. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
             }
         } else if (inputCoordinates.length() == 2) {
-            if (((int) inputCoordinates.charAt(0) - 96 > 10) ) {
+            if (((int) inputCoordinates.charAt(0) - 96 > 10)) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br>Перший символ має бути літерою до 'j' ", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-            else if (!Character.isDigit(inputCoordinates.charAt(1))) {
+            } else if (!Character.isDigit(inputCoordinates.charAt(1))) {
                 JOptionPane.showMessageDialog(backgroundPanel, "<html>Неправильний формат координат.<br> Другий символ має бути цифрою. ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
             }
@@ -531,8 +640,6 @@ public class Frame extends JFrame {
 
         }
     }
-
-
 
 
     public static void main(String[] args) {
@@ -548,7 +655,7 @@ public class Frame extends JFrame {
             //Path
             // liza: /home/liza/Downloads/beach.jpeg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/Downloads/beach.jpeg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
         }
 
         @Override
