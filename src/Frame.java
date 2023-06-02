@@ -19,7 +19,7 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser;
+    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel;
     private JButton level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
     private JComboBox<String> listOfBananas;
 
@@ -28,6 +28,7 @@ public class Frame extends JFrame {
     private BackgroundPanel backgroundPanel;
     private CompAlgorithm compAlgorithm;
     private ArrayList<String> shootedPlaces = new ArrayList<>();
+    private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4;
 
 
     Frame() {
@@ -303,7 +304,7 @@ public class Frame extends JFrame {
         backgroundPanel.add(start);
 
         //check if game level is chosen
-        JLabel showGameLevel = new JLabel();
+        showGameLevel = new JLabel();
         showGameLevel.setBounds(25, FRAME_HEIGHT - 205, 350, 50);
         showGameLevel.setForeground(Color.white);
         showGameLevel.setFont(new Font("Calibri", Font.PLAIN, 25));
@@ -344,19 +345,20 @@ public class Frame extends JFrame {
             return;
         }
         String stringCoordinates = typeCoordinate.getText();
-        // додати текст про результат (користува влучив чи ні) (jLabel)
 
         // дізнатися, чи користувач влучив у банан
         String check = compAlgorithm.isABanana(stringCoordinates);
         boolean res;
         if(check.equals(""))  {
             res = false;
-            informationForUser.setText("Ви не влучили у банан!");
+            informationForUser.setText("Ви не влучили в кошик з бананами!");
+            numberOfSteps--;
+            showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
         }
         else {
             res = true;
-            // змінити формулювання
-            informationForUser.setText("Ви влучили у " + check.charAt(0) + " - палубний банан!");
+            if(!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
+            else informationForUser.setText("Ви знайшли увесь кошик з бананами!");
         }
         char letter = stringCoordinates.charAt(0);
         int x = (int) letter - 96;
@@ -366,19 +368,57 @@ public class Frame extends JFrame {
         else placeBananaInComputerArea(x, y, true);
     }
 
+    // змінити значення відповідної змінної
+    private boolean makeStatistics(String s) { // повертає false, якщо користувач ще не збив увесь банан
+        if(s.charAt(0) == '6'){
+            p6++;
+            return p6 == 6;
+        }
+
+        if(s.charAt(0) == '4'){
+            if(s.charAt(1) == '1'){
+                p4++;
+                return p4 == 4;
+            } else if(s.charAt(1) == '2'){
+                p4n2++;
+                return p4n2 == 4;
+            }
+        } else if(s.charAt(0) == '3'){
+            if(s.charAt(1) == '1'){
+                p3n1++; return p3n1 == 3;
+            } else if(s.charAt(1) == '2'){
+                p3n2++; return p3n2 == 3;
+            }else if(s.charAt(1) == '3'){
+                p3n3++; return p3n3 == 3;
+            }
+        }
+        else if(s.charAt(0) ==  '2'){
+            if(s.charAt(1) == '1'){
+                p2n1++; return p2n1 == 2;
+            } else if(s.charAt(1) == '2'){
+                p2n2++; return p2n2 == 2;
+            } else if(s.charAt(1) == '3'){
+                p2n3++; return p2n3 == 2;
+            } else if(s.charAt(1) == '4'){
+                p2n4++; return p2n4 == 2;
+            }
+        }
+        return false;
+    }
+
+
     private void placeBananaInComputerArea(int x, int y, boolean result) { // result - true, якщо там був банан
         JPanel panel = new JPanel();
 
-        panel.setLayout(null); // Set the layout manager to null for absolute positioning
+        panel.setLayout(null);
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
         String imagePath;
         if(result)  {
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
-        }
-        else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -386,7 +426,7 @@ public class Frame extends JFrame {
         JLabel label = new JLabel(scaledIcon);
         label.setBounds(0, 0, 40, 40);
 
-        panel.add(label); // Add the label to the panel
+        panel.add(label);
 
         areaForComputer.setLayout(null);
         areaForComputer.add(panel);
