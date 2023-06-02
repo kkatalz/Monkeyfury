@@ -32,6 +32,8 @@ public class Frame extends JFrame {
     int BOARD_WIDTH = 10;
     int BOARD_HEIGHT = 10;
 
+    int attemptsCount = 0;
+
 
     boolean[][] availableCells = new boolean[10][10];
 
@@ -315,7 +317,12 @@ public class Frame extends JFrame {
             }
 
             System.out.println("X: " + xCoordinate + " Y: " + yCoordinate);
-            placeBanana(xCoordinate, yCoordinate);
+            if (attemptsCount / deckerAmount >= times) {
+                JOptionPane.showMessageDialog(backgroundPanel, "Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                attemptsCount = 0;
+            } else {
+                placeBanana(xCoordinate, yCoordinate);
+            }
             typeCoordinate.setText("");
 
 
@@ -525,35 +532,7 @@ public class Frame extends JFrame {
 //
 //    }
 
-
-    //placing banana on the user's map
-    public void placeBanana(int x, int y) {
-        if (!availableCells[x][y]) {
-            JOptionPane.showMessageDialog(backgroundPanel, "Ви не можете ставити банан так,щоб він торкався іншого", "ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-// Add the banana image to the made panel
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
-
-
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        JLabel label = new JLabel(scaledIcon);
-        label.setBounds(0, 0, 40, 40);
-        panel.add(label);
-        areaForUser.setLayout(null);
-        areaForUser.add(panel);
-
-
-// mark adjacent cells as unavailable
-
+    public void setUnavailiablePoints(int x, int y) {
         if (!((x == 0 && y == 0) || (x == 0 && y == BOARD_HEIGHT - 1) ||
                 (x == BOARD_WIDTH - 1 && y == 0) || (x == BOARD_WIDTH - 1 && y ==
                 BOARD_HEIGHT - 1))) {
@@ -595,6 +574,39 @@ public class Frame extends JFrame {
                 availableCells[x + 1][y + 1] = false;
             }
         }
+    }
+
+    //placing banana on the user's map
+    public void placeBanana(int x, int y) {
+        if (!availableCells[x - 1][y - 1]) {
+            JOptionPane.showMessageDialog(backgroundPanel, "Ви не можете ставити банан так,щоб він торкався іншого", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Add the banana image to the made panel
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
+
+
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(scaledIcon);
+        label.setBounds(0, 0, 40, 40);
+        panel.add(label);
+        areaForUser.setLayout(null);
+        areaForUser.add(panel);
+
+
+// mark adjacent cells as unavailable
+        setUnavailiablePoints(x - 1, y - 1);
+
+        attemptsCount++;
+
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
     }
 
