@@ -36,6 +36,7 @@ public class Frame extends JFrame {
 
 
     boolean[][] availableCells = new boolean[10][10];
+    JPanel[][] bananaPanels = new JPanel[BOARD_WIDTH][BOARD_HEIGHT];
 
 
     Frame() {
@@ -329,6 +330,18 @@ public class Frame extends JFrame {
         });
         deleteBanana.addActionListener(e -> {
             checkFormatOfCoordinates();
+            String inputCoordinates = typeCoordinate.getText();
+            char letterInCoordinates = inputCoordinates.charAt(0);
+            int xCoordinate = (int) letterInCoordinates - 96;
+            int yCoordinate;
+            if (inputCoordinates.length() == 3 && inputCoordinates.charAt(1) == '1' && inputCoordinates.charAt(2) == '0') {
+                yCoordinate = 10;
+            } else if (inputCoordinates.length() == 2) {
+                yCoordinate = Integer.parseInt(String.valueOf(inputCoordinates.charAt(1)));
+            } else {
+                return;
+            }
+            removeBanana(xCoordinate,yCoordinate);
         });
 
 
@@ -606,10 +619,18 @@ public class Frame extends JFrame {
         setUnavailiablePoints(x - 1, y - 1);
 
         attemptsCount++;
-
+        bananaPanels[x][y] = panel;
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
     }
 
+    //ПРИБРАТИ БАНАНИ
+    public void removeBanana(int x, int y) {
+        JPanel panelToRemove = bananaPanels[x][y];
+        Container parent = panelToRemove.getParent();
+        parent.remove(panelToRemove);
+        parent.revalidate();
+        parent.repaint();
+    }
 
     //Check if coordinates are written in correct format on the user's map
     public void checkFormatOfCoordinates() {
