@@ -60,7 +60,7 @@ public class Frame extends JFrame {
         this.setContentPane(backgroundPanel);
 
         informationForUser = new JLabel();
-        informationForUser.setBounds(FRAME_WIDTH - 340, 200, 500, 50);
+        informationForUser.setBounds(FRAME_WIDTH - 380, 200, 500, 50);
         informationForUser.setForeground(Color.black);
         informationForUser.setFont(new Font("f", Font.PLAIN, 17));
         backgroundPanel.add(informationForUser);
@@ -407,7 +407,9 @@ public class Frame extends JFrame {
             showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
 
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+            // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
+            // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -423,10 +425,13 @@ public class Frame extends JFrame {
 
         } else {
             res = true;
-            informationForUser.setText("Ви влучили у кошик з бананами!");
+            if(!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
+            else informationForUser.setText("Ви знайшли увесь кошик з бананами!");
 
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+            // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
+            // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -501,7 +506,7 @@ public class Frame extends JFrame {
         panel.setLayout(null);
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
 
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
@@ -509,8 +514,8 @@ public class Frame extends JFrame {
 
         String imagePath;
         if (result) {
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
-        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -638,7 +643,7 @@ public class Frame extends JFrame {
 
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -731,9 +736,9 @@ public class Frame extends JFrame {
         BackgroundPanel() {
             setLayout(null); // Disable layout manager for custom positioning
             //Path
-            // liza: /home/liza/Downloads/beach.jpeg
+            // liza:/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
         }
 
         @Override
