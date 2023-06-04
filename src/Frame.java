@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Frame extends JFrame {
 
@@ -19,7 +20,7 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel, happyMonkeyLabel, angryMonkeyLabel, monkeyLabel;
+    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel, happyMonkeyLabel, angryMonkeyLabel, monkeyLabel, informationForUserAboutDecker;
     private JButton level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
     private JComboBox<String> listOfBananas;
 
@@ -28,15 +29,18 @@ public class Frame extends JFrame {
     public BackgroundPanel backgroundPanel;
     private CompAlgorithm compAlgorithm;
     private ArrayList<String> shootedPlaces = new ArrayList<>();
+    private ArrayList<int[]> userCoordinates = new ArrayList<>();
     private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4;
     int BOARD_WIDTH = 10;
     int BOARD_HEIGHT = 10;
-
     int attemptsCount = 0;
+    int singleDeckAttempts, deckerAmount;
+    int previousChosenItem;
+    boolean twoDeckSet, threeDeckSet, fourDeckSet, sixDeckSet = false, toGiveCoordinates = true;
 
 
     boolean[][] availableCells = new boolean[10][10];
-    JPanel[][] bananaPanels = new JPanel[BOARD_WIDTH][BOARD_HEIGHT];
+    JPanel[][] bananaPanels = new JPanel[BOARD_WIDTH + 1][BOARD_HEIGHT + 1];
 
 
     Frame() {
@@ -52,7 +56,6 @@ public class Frame extends JFrame {
         this.setVisible(true);
         showAreasForFight();
 
-
     }
 
     public void showAreasForFight() {
@@ -60,7 +63,7 @@ public class Frame extends JFrame {
         this.setContentPane(backgroundPanel);
 
         informationForUser = new JLabel();
-        informationForUser.setBounds(FRAME_WIDTH - 380, 200, 500, 50);
+        informationForUser.setBounds(FRAME_WIDTH - 350, 200, 500, 50);
         informationForUser.setForeground(Color.black);
         informationForUser.setFont(new Font("f", Font.PLAIN, 17));
         backgroundPanel.add(informationForUser);
@@ -299,13 +302,20 @@ public class Frame extends JFrame {
                 return;
             }
 //            {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
-            int deckerAmount = 1;
             int times = 1;
             int chosenItem = listOfBananas.getSelectedIndex();
+
+            informationForUserAboutDecker = new JLabel("<html>Будь ласка, спочатку розставте всю необхідну кількість<br>  для конкретної" +
+                    " палуби, і тільки тоді переходьте до іншої.<br> У разі зайвого корабля, Ви можете його видалити ");
+            informationForUserAboutDecker.setBounds(25, FRAME_HEIGHT - 205, 800, 100);
+            informationForUserAboutDecker.setForeground(Color.white);
+            informationForUserAboutDecker.setFont(new Font("f", Font.PLAIN, 17));
+            backgroundPanel.add(informationForUserAboutDecker);
 
             if (chosenItem == 1) {
                 deckerAmount = 2;
                 times = 4;
+
             } else if (chosenItem == 2) {
                 deckerAmount = 3;
                 times = 3;
@@ -317,12 +327,33 @@ public class Frame extends JFrame {
                 times = 1;
             }
 
+
             System.out.println("X: " + xCoordinate + " Y: " + yCoordinate);
             if (attemptsCount / deckerAmount >= times) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
                 attemptsCount = 0;
+
+                if (deckerAmount == 2) twoDeckSet = true;
+                if (deckerAmount == 3) threeDeckSet = true;
+                if (deckerAmount == 4) fourDeckSet = true;
+                if (deckerAmount == 6) sixDeckSet = true;
+
+//check that checks
             } else {
-                placeBanana(xCoordinate, yCoordinate);
+                if (deckerAmount == 2 && twoDeckSet) {
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 2-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                } else if (deckerAmount == 3 && threeDeckSet) {
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 3-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+                } else if (deckerAmount == 4 && threeDeckSet) {
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 4-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+                } else if (deckerAmount == 6 && threeDeckSet) {
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 6-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+                } else {
+                    placeBanana(xCoordinate, yCoordinate, chosenItem);
+                }
             }
             typeCoordinate.setText("");
 
@@ -360,7 +391,18 @@ public class Frame extends JFrame {
         backgroundPanel.add(showGameLevel);
 
         start.addActionListener(e -> {
-            if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
+
+            //ПЕРЕВІРКА, ЧИ ВСІ ККОРАБЛІ РОЗСТАВЛЕНІ
+            if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {
+                String whichDeckIsnotPlaced = "Не розставлені палуби: ";
+                if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
+                if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
+                if (!fourDeckSet) whichDeckIsnotPlaced += " 4-палубні ";
+                if (!sixDeckSet) whichDeckIsnotPlaced += " 6-палубні ";
+
+                JOptionPane.showMessageDialog(backgroundPanel, "Ви не розставили всі кораблі \n" + whichDeckIsnotPlaced, "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            } else if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
                 if (levelOfGame == 1) numberOfSteps = 70;
@@ -377,6 +419,7 @@ public class Frame extends JFrame {
                 backgroundPanel.remove(deleteBanana);
                 backgroundPanel.remove(bananasType);
                 backgroundPanel.remove(listOfBananas);
+                backgroundPanel.remove(informationForUserAboutDecker);
                 backgroundPanel.add(shootButton);
                 SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
@@ -425,7 +468,7 @@ public class Frame extends JFrame {
 
         } else {
             res = true;
-            if(!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
+            if (!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
             else informationForUser.setText("Ви знайшли увесь кошик з бананами!");
 
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
@@ -452,8 +495,23 @@ public class Frame extends JFrame {
         if (stringCoordinates.length() == 3) y = 10;
         if (!res) placeBananaInComputerArea(x, y, false);
         else placeBananaInComputerArea(x, y, true);
+
+        // постріл комп'ютера
+        organiseComputerShoot();
     }
 
+    private void organiseComputerShoot(){
+        if(toGiveCoordinates) giveCoordinates();
+        String computerShootCoordinate = compAlgorithm.shoot();
+        char letter = computerShootCoordinate.charAt(0);
+        int x = (int) letter - 96;
+        int y = Character.getNumericValue(computerShootCoordinate.charAt(1));
+        if (computerShootCoordinate.length() == 3) y = 10;
+
+        // визначити результат
+        placeBananaInUserArea(x, y, true);
+
+    }
 
     // змінити значення відповідної змінної
     private boolean makeStatistics(String s) { // повертає false, якщо користувач ще не збив увесь банан
@@ -532,6 +590,37 @@ public class Frame extends JFrame {
 
     }
 
+    private void placeBananaInUserArea(int x, int y, boolean result){ // розташувати банан або шкірку від банана після вистрілу комп'ютера
+        JPanel panel = new JPanel();
+
+        panel.setLayout(null);
+        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
+
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
+
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
+
+        String imagePath;
+        if (result) {
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(scaledIcon);
+        label.setBounds(0, 0, 40, 40);
+
+        panel.add(label);
+
+        areaForUser.setLayout(null);
+        areaForUser.add(panel);
+
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
+    }
+
     private boolean checkFormatOfCoordinatesForShooting() {
         //  typeCoordinate
         String s = typeCoordinate.getText();
@@ -584,6 +673,8 @@ public class Frame extends JFrame {
 //
 //    }
 
+
+    //the method that makes unavailable points around single point
     public void setUnavailiablePoints(int x, int y) {
         if (!((x == 0 && y == 0) || (x == 0 && y == BOARD_HEIGHT - 1) ||
                 (x == BOARD_WIDTH - 1 && y == 0) || (x == BOARD_WIDTH - 1 && y ==
@@ -629,11 +720,18 @@ public class Frame extends JFrame {
     }
 
     //placing banana on the user's map
-    public void placeBanana(int x, int y) {
+    public void placeBanana(int x, int y, int chosenItem) {
         if (!availableCells[x - 1][y - 1]) {
             JOptionPane.showMessageDialog(backgroundPanel, "Ви не можете ставити банан так,щоб він торкався іншого", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (previousChosenItem != chosenItem) {
+            attemptsCount = 0;
+            singleDeckAttempts = 0;
+        }
+
+        previousChosenItem = chosenItem;
+
 
 // Add the banana image to the made panel
         JPanel panel = new JPanel();
@@ -641,9 +739,9 @@ public class Frame extends JFrame {
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
 
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpg";
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -653,11 +751,24 @@ public class Frame extends JFrame {
         areaForUser.setLayout(null);
         areaForUser.add(panel);
 
+        availableCells[x - 1][y - 1] = false;
+
+
+        int[] coords = {x - 1, y - 1};
+        userCoordinates.add(coords);
+        singleDeckAttempts++;
+        attemptsCount++;
 
 // mark adjacent cells as unavailable
-        setUnavailiablePoints(x - 1, y - 1);
+        if (deckerAmount == singleDeckAttempts) {
+            for (int[] array : userCoordinates) {
+                setUnavailiablePoints(array[0], array[1]);
+            }
 
-        attemptsCount++;
+            singleDeckAttempts = 0;
+        }
+
+
         bananaPanels[x][y] = panel;
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
     }
@@ -665,6 +776,10 @@ public class Frame extends JFrame {
     //ПРИБРАТИ БАНАНИ
     public void removeBanana(int x, int y) {
         JPanel panelToRemove = bananaPanels[x][y];
+        availableCells[x - 1][y - 1] = true;
+        singleDeckAttempts--;
+        attemptsCount--;
+
         Container parent = panelToRemove.getParent();
         parent.remove(panelToRemove);
         parent.revalidate();
@@ -711,6 +826,12 @@ public class Frame extends JFrame {
             JOptionPane.showMessageDialog(backgroundPanel, "У координаті не може бути більше трьох символів ", "ERROR", JOptionPane.ERROR_MESSAGE);
 
         }
+    }
+
+    // передати в клас CompAlgorithm список точок корисувача
+    private void giveCoordinates(){
+        toGiveCoordinates = false;
+        compAlgorithm.setBananas(userCoordinates);
     }
 
 //    public void addMonkeyImage(String imagePath ){
