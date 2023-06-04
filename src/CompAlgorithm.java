@@ -21,13 +21,7 @@ public class CompAlgorithm {
 
 
     public static void main(String[] args) {
-        CompAlgorithm compAlgorithm = new CompAlgorithm();
-        compAlgorithm.setup();
-        boolean b;
-        do {
-            b = compAlgorithm.placeBananas();
-        } while(!b);
-        compAlgorithm.setLogger();
+        new CompAlgorithm();
     }
 
     CompAlgorithm (){
@@ -1299,6 +1293,10 @@ public class CompAlgorithm {
         // якщо постріл був вдалим:
         if(!(makeUnPlaceLeft(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceLeft(coordinateForShoot))){
             potentionalPlacesForShoot.put("left", (makeUnPlaceLeft(coordinateForShoot)));
+            // зробити недоступними точки згори та знизу
+            unavailablePointsForShooting.add(makeUnPlaceUp(coordinateForShoot));
+            unavailablePointsForShooting.add(makeUnPlaceDown(coordinateForShoot));
+
             potentionalPlacesForShoot.remove("up");
             potentionalPlacesForShoot.remove("down");
         }
@@ -1317,6 +1315,10 @@ public class CompAlgorithm {
         // якщо постріл був вдалим:
         if(!(makeUnPlaceRight(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceRight(coordinateForShoot))) {
             potentionalPlacesForShoot.put("right", makeUnPlaceRight(coordinateForShoot));
+            // зробити недоступними точки згори та знизу
+            unavailablePointsForShooting.add(makeUnPlaceUp(coordinateForShoot));
+            unavailablePointsForShooting.add(makeUnPlaceDown(coordinateForShoot));
+
             potentionalPlacesForShoot.remove("up");
             potentionalPlacesForShoot.remove("down");
         }
@@ -1336,6 +1338,10 @@ public class CompAlgorithm {
         // якщо постріл був вдалим:
         if(!(makeUnPlaceUp(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceUp(coordinateForShoot))) {
             potentionalPlacesForShoot.put("up", makeUnPlaceUp(coordinateForShoot));
+            // зробити недоступними точки зліва та права
+            unavailablePointsForShooting.add(makeUnPlaceRight(coordinateForShoot));
+            unavailablePointsForShooting.add(makeUnPlaceLeft(coordinateForShoot));
+
             potentionalPlacesForShoot.remove("left");
             potentionalPlacesForShoot.remove("right");
         }
@@ -1354,6 +1360,10 @@ public class CompAlgorithm {
         // якщо постріл був вдалим:
         if(!(makeUnPlaceDown(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceDown(coordinateForShoot))) {
             potentionalPlacesForShoot.put("down", makeUnPlaceDown(coordinateForShoot));
+            // зробити недоступними точки зліва та права
+            unavailablePointsForShooting.add(makeUnPlaceRight(coordinateForShoot));
+            unavailablePointsForShooting.add(makeUnPlaceLeft(coordinateForShoot));
+
             potentionalPlacesForShoot.remove("left");
             potentionalPlacesForShoot.remove("right");
         }
@@ -1400,6 +1410,7 @@ public class CompAlgorithm {
                 break;
             }
         }
+        // вистрілити
         coordinateForShoot = coordinate;
         return coordinate;
     }
