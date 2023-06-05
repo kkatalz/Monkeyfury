@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -51,6 +52,14 @@ public class Frame extends JFrame {
         this.setVisible(true);
         showAreasForFight();
 
+    }
+    public static void restart() {
+        try {
+            Runtime.getRuntime().exec("java -cp " + System.getProperty("java.class.path") + " Frame");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 
     public void showAreasForFight() {
@@ -395,7 +404,7 @@ public class Frame extends JFrame {
         start.addActionListener(e -> {
 
             //ПЕРЕВІРКА, ЧИ ВСІ КОРАБЛІ РОЗСТАВЛЕНІ
-            if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !
+            if (twoDeckSet || threeDeckSet || fourDeckSet || sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !
                 String whichDeckIsnotPlaced = "Не розставлені палуби: ";
                 if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
                 if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
@@ -407,7 +416,7 @@ public class Frame extends JFrame {
             } else if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                if (levelOfGame == 1) numberOfSteps = 70; //ТУТ БУЛО 70
+                if (levelOfGame == 1) numberOfSteps = 1; //ТУТ БУЛО 70
                 else if (levelOfGame == 2) numberOfSteps = 54;
                 else numberOfSteps = 24;
                 showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
@@ -453,7 +462,7 @@ public class Frame extends JFrame {
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
-            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg";
+            String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -475,7 +484,7 @@ public class Frame extends JFrame {
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
+            String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -499,7 +508,9 @@ public class Frame extends JFrame {
                         null, new Object[]{"Так", "Ні"}, "OK");
 
                 if (option == JOptionPane.YES_OPTION) {
-                   //TO FINISH
+                    restart();
+
+
                 } else if (option == JOptionPane.NO_OPTION) {
                     backgroundPanel.removeAll();
                     backgroundPanel.revalidate();
@@ -510,6 +521,9 @@ public class Frame extends JFrame {
                     informationForUser.setForeground(Color.black);
                     informationForUser.setFont(new Font("Segoe Script", Font.PLAIN, 25));
                     backgroundPanel.add(informationForUser);
+
+                    happyMonkeyImage();
+                    angryMonkeyImage();
                 }
             });
         }
@@ -594,13 +608,14 @@ public class Frame extends JFrame {
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
 
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
+        //    if (result) {
+        //            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        //        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
 
         String imagePath;
         if (result) {
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
-        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -626,7 +641,7 @@ public class Frame extends JFrame {
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
 
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\redBanana.jpeg
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
 
         String imagePath;
@@ -634,9 +649,9 @@ public class Frame extends JFrame {
             // new
             removeBananaInUserArea(x, y);
 
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\redBanana.jpeg";
         } else {
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
         }
 
         ImageIcon icon = new ImageIcon(imagePath);
@@ -772,8 +787,8 @@ public class Frame extends JFrame {
 
 
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg";
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\redBanana.jpeg
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\redBanana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -905,7 +920,25 @@ public class Frame extends JFrame {
 //        backgroundPanel.add(label);
 //    }
 
+    public void happyMonkeyImage(){
+        String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        monkeyLabel = new JLabel(scaledIcon);
+        monkeyLabel.setBounds(FRAME_WIDTH /2, FRAME_HEIGHT/2+100, 80, 80);
+        backgroundPanel.add(monkeyLabel);
+    }
 
+    public void angryMonkeyImage(){
+        String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        monkeyLabel = new JLabel(scaledIcon);
+        monkeyLabel.setBounds(FRAME_WIDTH /2, FRAME_HEIGHT/2+100, 80, 80);
+        backgroundPanel.add(monkeyLabel);
+    }
     public static void main(String[] args) {
         new Frame();
 
@@ -919,7 +952,7 @@ public class Frame extends JFrame {
             //Path
             // liza:/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
         }
 
         @Override
