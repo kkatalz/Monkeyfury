@@ -1,11 +1,5 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Frame extends JFrame {
@@ -288,6 +282,17 @@ public class Frame extends JFrame {
             typeCoordinate.setText("");
         });
 
+
+        informationForUserAboutDecker = new JLabel("<html>Будь ласка, спочатку розставте всю необхідну кількість<br>  для конкретної" +
+                " палуби, і тільки тоді переходьте до іншої.<br> У разі зайвого корабля, Ви можете його видалити ");
+        informationForUserAboutDecker.setBounds(25, FRAME_HEIGHT - 205, 800, 100);
+        informationForUserAboutDecker.setForeground(Color.white);
+        informationForUserAboutDecker.setFont(new Font("f", Font.PLAIN, 17));
+        backgroundPanel.add(informationForUserAboutDecker);
+
+
+
+
         //Check if coordinates are written in correct format
         putBanana.addActionListener(e -> {
             checkFormatOfCoordinates();
@@ -302,15 +307,9 @@ public class Frame extends JFrame {
             } else {
                 return;
             }
-//            {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
+
             int chosenItem = listOfBananas.getSelectedIndex();
 
-            informationForUserAboutDecker = new JLabel("<html>Будь ласка, спочатку розставте всю необхідну кількість<br>  для конкретної" +
-                    " палуби, і тільки тоді переходьте до іншої.<br> У разі зайвого корабля, Ви можете його видалити ");
-            informationForUserAboutDecker.setBounds(25, FRAME_HEIGHT - 205, 800, 100);
-            informationForUserAboutDecker.setForeground(Color.white);
-            informationForUserAboutDecker.setFont(new Font("f", Font.PLAIN, 17));
-            backgroundPanel.add(informationForUserAboutDecker);
 
             if (chosenItem == 1) {
                 deckerAmount = 2;
@@ -325,8 +324,7 @@ public class Frame extends JFrame {
             } else if (chosenItem == 4) {
                 deckerAmount = 6;
                 times = 1;
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(backgroundPanel, "Оберіть палубу ", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -342,25 +340,22 @@ public class Frame extends JFrame {
                 if (deckerAmount == 4) fourDeckSet = true;
                 if (deckerAmount == 6) sixDeckSet = true;
 
-//check that checks
+
             } else {
 
-                if ( twoDeckSet&& threeDeckSet&&fourDeckSet&& sixDeckSet) {
+                if (twoDeckSet && threeDeckSet && fourDeckSet && sixDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кораблі. Переходьте до гри", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    backgroundPanel.remove(informationForUserAboutDecker);
-                }
-                else if (deckerAmount == 2 && twoDeckSet) {
+
+                } else if (deckerAmount == 2 && twoDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 2-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else if (deckerAmount == 3 && threeDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 3-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
-
                 } else if (deckerAmount == 4 && fourDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 4-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
-
                 } else if (deckerAmount == 6 && sixDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 6-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-                }else {
+                } else {
                     placeBanana(xCoordinate, yCoordinate, chosenItem);
                 }
             }
@@ -401,8 +396,8 @@ public class Frame extends JFrame {
 
         start.addActionListener(e -> {
 
-            //ПЕРЕВІРКА, ЧИ ВСІ ККОРАБЛІ РОЗСТАВЛЕНІ
-            if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {
+            //ПЕРЕВІРКА, ЧИ ВСІ КОРАБЛІ РОЗСТАВЛЕНІ
+            if (twoDeckSet || threeDeckSet || fourDeckSet || sixDeckSet) {
                 String whichDeckIsnotPlaced = "Не розставлені палуби: ";
                 if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
                 if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
@@ -424,14 +419,13 @@ public class Frame extends JFrame {
                 backgroundPanel.remove(level2Button);
                 backgroundPanel.remove(level3Button);
                 backgroundPanel.remove(gameLevelLabel);
+                backgroundPanel.remove(informationForUserAboutDecker);
                 backgroundPanel.remove(putBanana);
                 backgroundPanel.remove(deleteBanana);
                 backgroundPanel.remove(bananasType);
                 backgroundPanel.remove(listOfBananas);
-                informationForUserAboutDecker.setText("");
                 backgroundPanel.add(shootButton);
                 SwingUtilities.updateComponentTreeUI(backgroundPanel);
-
             }
 
         });

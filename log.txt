@@ -270,3 +270,35 @@ Jun 05, 2023 1:00:37 PM CompAlgorithm setLogger
 WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
 Jun 05, 2023 1:00:37 PM CompAlgorithm setLogger
 INFO: Number of unsuccessful efforts to place a banana: 177
+Jun 05, 2023 1:04:34 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 56
+Jun 05, 2023 1:12:29 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 54
+Jun 05, 2023 1:13:59 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 117
+Jun 05, 2023 1:16:33 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 35
+Jun 05, 2023 1:19:35 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 109
+Jun 05, 2023 1:24:53 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 58
+Jun 05, 2023 1:25:38 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 05, 2023 1:25:38 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 81
+Jun 05, 2023 1:29:21 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 48
+Jun 05, 2023 1:41:20 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 05, 2023 1:41:21 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 54
+Jun 05, 2023 1:42:28 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 72
+Jun 05, 2023 1:46:02 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 175
+Jun 05, 2023 1:46:53 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 05, 2023 1:46:53 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 22
+Jun 05, 2023 1:48:59 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 16
