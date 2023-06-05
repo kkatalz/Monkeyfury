@@ -874,7 +874,7 @@ public class Frame extends JFrame {
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
             backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
         }
-
+g
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
