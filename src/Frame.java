@@ -53,6 +53,7 @@ public class Frame extends JFrame {
         showAreasForFight();
 
     }
+
     public static void restart() {
         try {
             Runtime.getRuntime().exec("java -cp " + System.getProperty("java.class.path") + " Frame");
@@ -404,7 +405,7 @@ public class Frame extends JFrame {
         start.addActionListener(e -> {
 
             //ПЕРЕВІРКА, ЧИ ВСІ КОРАБЛІ РОЗСТАВЛЕНІ
-            if (twoDeckSet || threeDeckSet || fourDeckSet || sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !
+            if (twoDeckSet || threeDeckSet || fourDeckSet || sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet
                 String whichDeckIsnotPlaced = "Не розставлені палуби: ";
                 if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
                 if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
@@ -416,7 +417,7 @@ public class Frame extends JFrame {
             } else if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                if (levelOfGame == 1) numberOfSteps = 1; //ТУТ БУЛО 70
+                if (levelOfGame == 1) numberOfSteps = 1; //ТУТ БУЛО 70 -> numberOfSteps = 70
                 else if (levelOfGame == 2) numberOfSteps = 54;
                 else numberOfSteps = 24;
                 showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
@@ -462,7 +463,7 @@ public class Frame extends JFrame {
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
-            String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -484,7 +485,7 @@ public class Frame extends JFrame {
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-            String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -497,8 +498,10 @@ public class Frame extends JFrame {
             monkeyLabel = new JLabel(scaledIcon);
             monkeyLabel.setBounds(FRAME_WIDTH - 260, 130, 80, 80);
             backgroundPanel.add(monkeyLabel);
-        }//КОЛИ КІЛЬКІСТЬ ХОДІВ = 0, ГРА ЗАКІНЧУЄТЬСЯ
-        if (numberOfSteps == 0) {
+
+
+        }//КОЛИ КІЛЬКІСТЬ ХОДІВ = 0, ГРА ЗАКІНЧУЄТЬСЯ. ПРОГРАШ
+        if (numberOfSteps != 0) {
             // Delay the execution of the dialog using a separate thread
             SwingUtilities.invokeLater(() -> {
                 int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви програли:(" +
@@ -517,15 +520,46 @@ public class Frame extends JFrame {
                     backgroundPanel.repaint();
 
                     informationForUser = new JLabel("THE END~");
-                    informationForUser.setBounds(FRAME_WIDTH / 2-100, FRAME_HEIGHT / 2 - 50, 250, 50);
+                    informationForUser.setBounds(FRAME_WIDTH / 2 - 100, FRAME_HEIGHT / 2 - 50, 250, 50);
                     informationForUser.setForeground(Color.black);
                     informationForUser.setFont(new Font("Segoe Script", Font.PLAIN, 25));
                     backgroundPanel.add(informationForUser);
 
                     happyMonkeyImage();
-                    angryMonkeyImage();
+
                 }
             });
+
+            //ПЕРЕМОГА КОРИСТУВАЧА
+        } else if (numberOfSteps > 0) { //ОСЬ ТУТ numberOfSteps>0 && [щось,що означає: всі банани користувач знайшов]
+
+            SwingUtilities.invokeLater(() -> {
+                int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви перемогли!!" +
+                                "<br>Хочете повторити ще раз?(дані будуть втрачені)</center>",
+                        "Перемога", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, new Object[]{"Так", "Ні"}, "OK");
+
+                if (option == JOptionPane.YES_OPTION) {
+                    restart();
+
+
+                } else if (option == JOptionPane.NO_OPTION) {
+
+                    backgroundPanel.removeAll();
+                    backgroundPanel.revalidate();
+                    backgroundPanel.repaint();
+
+                    informationForUser = new JLabel("THE END~");
+                    informationForUser.setBounds(FRAME_WIDTH / 2 - 100, FRAME_HEIGHT / 2 - 50, 250, 50);
+                    informationForUser.setForeground(Color.black);
+                    informationForUser.setFont(new Font("Segoe Script", Font.PLAIN, 25));
+                    backgroundPanel.add(informationForUser);
+
+                    happyMonkeyImage();
+
+                }
+            });
+
         }
 
 
@@ -548,8 +582,8 @@ public class Frame extends JFrame {
         int y = Character.getNumericValue(computerShootCoordinate.charAt(1));
         if (computerShootCoordinate.length() == 3) y = 10;
 
-        if(compAlgorithm.checkIfShootSuccessful()) placeBananaInUserArea(x, y, true);
-        else if(!compAlgorithm.checkIfShootSuccessful())  placeBananaInUserArea(x, y, false);
+        if (compAlgorithm.checkIfShootSuccessful()) placeBananaInUserArea(x, y, true);
+        else if (!compAlgorithm.checkIfShootSuccessful()) placeBananaInUserArea(x, y, false);
         // визначити результат
 
     }
@@ -920,25 +954,17 @@ public class Frame extends JFrame {
 //        backgroundPanel.add(label);
 //    }
 
-    public void happyMonkeyImage(){
-        String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+    public void happyMonkeyImage() {
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         monkeyLabel = new JLabel(scaledIcon);
-        monkeyLabel.setBounds(FRAME_WIDTH /2, FRAME_HEIGHT/2+100, 80, 80);
+        monkeyLabel.setBounds(FRAME_WIDTH / 2 - 70, FRAME_HEIGHT / 2 + 15, 80, 80);
         backgroundPanel.add(monkeyLabel);
     }
 
-    public void angryMonkeyImage(){
-        String imagePath = " C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        monkeyLabel = new JLabel(scaledIcon);
-        monkeyLabel.setBounds(FRAME_WIDTH /2, FRAME_HEIGHT/2+100, 80, 80);
-        backgroundPanel.add(monkeyLabel);
-    }
+
     public static void main(String[] args) {
         new Frame();
 
