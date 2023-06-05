@@ -33,6 +33,7 @@ public class Frame extends JFrame {
     int BOARD_WIDTH = 10;
     int BOARD_HEIGHT = 10;
     int attemptsCount = 0;
+    int times = 1;
     int singleDeckAttempts, deckerAmount;
     int previousChosenItem;
     boolean twoDeckSet, threeDeckSet, fourDeckSet, sixDeckSet = false;
@@ -302,7 +303,6 @@ public class Frame extends JFrame {
                 return;
             }
 //            {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
-            int times = 1;
             int chosenItem = listOfBananas.getSelectedIndex();
 
             informationForUserAboutDecker = new JLabel("<html>Будь ласка, спочатку розставте всю необхідну кількість<br>  для конкретної" +
@@ -326,6 +326,10 @@ public class Frame extends JFrame {
                 deckerAmount = 6;
                 times = 1;
             }
+            else {
+                JOptionPane.showMessageDialog(backgroundPanel, "Оберіть палубу ", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
 
             System.out.println("X: " + xCoordinate + " Y: " + yCoordinate);
@@ -333,25 +337,30 @@ public class Frame extends JFrame {
                 JOptionPane.showMessageDialog(backgroundPanel, "Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
                 attemptsCount = 0;
 
-                if (deckerAmount == 2) twoDeckSet = true;
+                if (deckerAmount == 2) twoDeckSet = true; //true-усі розставлені
                 if (deckerAmount == 3) threeDeckSet = true;
                 if (deckerAmount == 4) fourDeckSet = true;
                 if (deckerAmount == 6) sixDeckSet = true;
 
 //check that checks
             } else {
-                if (deckerAmount == 2 && twoDeckSet) {
+
+                if ( twoDeckSet&& threeDeckSet&&fourDeckSet&& sixDeckSet) {
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кораблі. Переходьте до гри", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    backgroundPanel.remove(informationForUserAboutDecker);
+                }
+                else if (deckerAmount == 2 && twoDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 2-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else if (deckerAmount == 3 && threeDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 3-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-                } else if (deckerAmount == 4 && threeDeckSet) {
+                } else if (deckerAmount == 4 && fourDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 4-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-                } else if (deckerAmount == 6 && threeDeckSet) {
+                } else if (deckerAmount == 6 && sixDeckSet) {
                     JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 6-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
 
-                } else {
+                }else {
                     placeBanana(xCoordinate, yCoordinate, chosenItem);
                 }
             }
@@ -419,7 +428,7 @@ public class Frame extends JFrame {
                 backgroundPanel.remove(deleteBanana);
                 backgroundPanel.remove(bananasType);
                 backgroundPanel.remove(listOfBananas);
-                backgroundPanel.remove(informationForUserAboutDecker);
+                informationForUserAboutDecker.setText("");
                 backgroundPanel.add(shootButton);
                 SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
@@ -722,6 +731,16 @@ public class Frame extends JFrame {
             }
 
             singleDeckAttempts = 0;
+        }
+
+        if (attemptsCount / deckerAmount >= times) {
+            attemptsCount = 0;
+
+            if (deckerAmount == 2) twoDeckSet = true; //true-усі розставлені
+            if (deckerAmount == 3) threeDeckSet = true;
+            if (deckerAmount == 4) fourDeckSet = true;
+            if (deckerAmount == 6) sixDeckSet = true;
+
         }
 
 
