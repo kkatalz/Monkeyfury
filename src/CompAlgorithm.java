@@ -5,6 +5,9 @@ import java.util.logging.*;
 // to create computer's algorithm for placement bananas
 public class CompAlgorithm {
     private static final Logger LOGGER = Logger.getLogger(CompAlgorithm.class.getName());
+    // for demo version
+    ArrayList<String> coordinatesDemo = new ArrayList<>();
+    Frame frame;
     private ArrayList<Integer> numbers;
     private ArrayList<Character> chars;
     private ArrayList<String> points6, points4, points4n2, unavailablePoints6, unavailablePoints4, unavailablePoints4n2;
@@ -12,24 +15,29 @@ public class CompAlgorithm {
     private ArrayList<String> points2n1, unavailablePoints2n1, points2n2, unavailablePoints2n2, points2n3, unavailablePoints2n3; // letter and number
     private ArrayList<String> points2n4, unavailablePoints2n4;
     private int countUn;
+    private ArrayList<String> unavailablePointsForShooting = new ArrayList<>();
+    private Map<String, String> potentionalPlacesForShoot = new HashMap<>();
+    private ArrayList<int[]> userCoordinates = new ArrayList<>();
+    private String coordinateForShoot;
 
-    public static void main(String[] args) {
-        CompAlgorithm compAlgorithm = new CompAlgorithm();
-        compAlgorithm.setup();
-        boolean b;
-        do {
-            b = compAlgorithm.placeBananas();
-        } while(!b);
-        compAlgorithm.setLogger();
-    }
-
-    CompAlgorithm (){
+    CompAlgorithm() {
         setup();
         boolean b;
         do {
             b = placeBananas();
-        } while(!b);
+        } while (!b);
         setLogger();
+
+        // demo
+        coordinatesDemo.add("a1");
+        coordinatesDemo.add("b1");
+        // demo
+        //frame = new Frame();
+    }
+
+    public static void main(String[] args) {
+        new CompAlgorithm();
+
     }
 
     private void setup() {
@@ -116,7 +124,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(4, 1);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
                     return false;
@@ -143,7 +151,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(4, 2);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
                     return false;
@@ -171,7 +179,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(3, 1);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
 
@@ -199,7 +207,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(3, 2);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
 
@@ -228,7 +236,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(3, 3);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
 
@@ -257,7 +265,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 1);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
 
@@ -286,7 +294,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 2);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
                     return false;
@@ -316,7 +324,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 3);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
                     return false;
@@ -345,7 +353,7 @@ public class CompAlgorithm {
             if (!next) {
                 clearArray(2, 4);
                 countUn++;
-                if(countUn >= 200){
+                if (countUn >= 200) {
                     clearEveryArray();
                     setLogger();
                     return false;
@@ -1197,7 +1205,7 @@ public class CompAlgorithm {
         return s;
     }
 
-    private String makeUnPlaceUp(String place) {
+    public String makeUnPlaceUp(String place) {
         char ch = place.charAt(0);
         int num = Character.getNumericValue(place.charAt(1));
         if (place.length() > 2) num = 10;
@@ -1213,7 +1221,7 @@ public class CompAlgorithm {
             fileHandler.setFormatter(new SimpleFormatter());
 
             LOGGER.addHandler(fileHandler);
-            if(countUn < 200){
+            if (countUn < 200) {
                 LOGGER.setLevel(Level.INFO);
                 LOGGER.info("Number of unsuccessful efforts to place a banana: " + countUn);
             } else {
@@ -1258,5 +1266,208 @@ public class CompAlgorithm {
             if (s.equals(value)) return "24";
         }
         return "";
+    }
+
+    public void setBananas(ArrayList<int[]> points) {
+        userCoordinates = points;
+    }
+
+    public String shoot() { // метод для вистрілу (повертає точку в яку стріляє)
+        decideNextStepsForShooting();
+
+        return coordinateForShoot;
+    }
+
+    public void decideNextStepsForShooting() {
+        if (potentionalPlacesForShoot.isEmpty()) { // якщо немає жодних потенційних точок для вистрілу
+            do {
+                coordinateForShoot = generateCoordinates();
+            } while (coordinateForShoot.equals("again"));
+        } else {
+            if (potentionalPlacesForShoot.containsKey("left")) shootPotentionalPlaceLeft();
+            else if (potentionalPlacesForShoot.containsKey("right")) shootPotentionlaPlaceRight();
+            else if (potentionalPlacesForShoot.containsKey("up")) shootPotentionalPlaceUp();
+            else if (potentionalPlacesForShoot.containsKey("down")) shootPotentionalPlaceDown();
+        }
+    }
+
+    private void shootPotentionalPlaceLeft() { // стріляти по точці зліва
+        coordinateForShoot = potentionalPlacesForShoot.get("left");
+        unavailablePointsForShooting.add(coordinateForShoot);
+        // вистрілити
+        boolean success = false;
+        // вставити метод, який каже, чи ця точка є бананом (постріл був вдалим)
+        for (int i = 0; i < userCoordinates.size(); i++) {
+            int[] temp = userCoordinates.get(i);
+            char ch = chars.get(temp[0]);
+            int num = numbers.get(temp[1]);
+            String s = String.valueOf(ch) + num;
+            if (coordinateForShoot.equals(s)) {
+                success = true;
+                // якщо постріл був вдалим:
+                if (!(makeUnPlaceLeft(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceLeft(coordinateForShoot))) {
+                    potentionalPlacesForShoot.put("left", (makeUnPlaceLeft(coordinateForShoot)));
+                    // зробити недоступними точки згори та знизу
+                    unavailablePointsForShooting.add(makeUnPlaceUp(coordinateForShoot));
+                    unavailablePointsForShooting.add(makeUnPlaceDown(coordinateForShoot));
+
+                    potentionalPlacesForShoot.remove("up");
+                    potentionalPlacesForShoot.remove("down");
+                }
+                break;
+            }
+        }
+
+        // якщо постріл був не вдалим
+        if (!success) potentionalPlacesForShoot.remove("left");
+    }
+
+    private void shootPotentionlaPlaceRight() {
+        coordinateForShoot = potentionalPlacesForShoot.get("right");
+        unavailablePointsForShooting.add(coordinateForShoot);
+        // вистрілити
+
+        // вставити метод, який каже, чи ця точка є бананом (постріл був вдалим)
+        boolean success = false;
+        for (int i = 0; i < userCoordinates.size(); i++) {
+            int[] temp = userCoordinates.get(i);
+            char ch = chars.get(temp[0]);
+            int num = numbers.get(temp[1]);
+            String s = String.valueOf(ch) + num;
+            if (coordinateForShoot.equals(s)) {
+                success = true;
+                // якщо постріл був вдалим:
+                if (!(makeUnPlaceRight(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceRight(coordinateForShoot))) {
+                    potentionalPlacesForShoot.put("right", makeUnPlaceRight(coordinateForShoot));
+                    // зробити недоступними точки згори та знизу
+                    unavailablePointsForShooting.add(makeUnPlaceUp(coordinateForShoot));
+                    unavailablePointsForShooting.add(makeUnPlaceDown(coordinateForShoot));
+
+                    potentionalPlacesForShoot.remove("up");
+                    potentionalPlacesForShoot.remove("down");
+                }
+                break;
+            }
+        }
+
+        // якщо постріл був не вдалим
+        if (!success) potentionalPlacesForShoot.remove("right");
+
+    }
+
+    private void shootPotentionalPlaceUp() {
+        coordinateForShoot = potentionalPlacesForShoot.get("up");
+        unavailablePointsForShooting.add(coordinateForShoot);
+        // вистрілити
+
+        // вставити метод, який каже, чи ця точка є бананом (постріл був вдалим)
+
+        boolean success = false;
+        for (int i = 0; i < userCoordinates.size(); i++) {
+            int[] temp = userCoordinates.get(i);
+            char ch = chars.get(temp[0]);
+            int num = numbers.get(temp[1]);
+            String s = String.valueOf(ch) + num;
+            if (coordinateForShoot.equals(s)) {
+                success = true;
+                // якщо постріл був вдалим:
+                if (!(makeUnPlaceUp(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceUp(coordinateForShoot))) {
+                    potentionalPlacesForShoot.put("up", makeUnPlaceUp(coordinateForShoot));
+                    // зробити недоступними точки зліва та права
+                    unavailablePointsForShooting.add(makeUnPlaceRight(coordinateForShoot));
+                    unavailablePointsForShooting.add(makeUnPlaceLeft(coordinateForShoot));
+
+                    potentionalPlacesForShoot.remove("left");
+                    potentionalPlacesForShoot.remove("right");
+                }
+                break;
+            }
+        }
+
+
+        // якщо постріл був не вдалим
+        if (!success) potentionalPlacesForShoot.remove("up");
+    }
+
+    private void shootPotentionalPlaceDown() {
+        coordinateForShoot = potentionalPlacesForShoot.get("down");
+        unavailablePointsForShooting.add(coordinateForShoot);
+        // вистрілити
+
+        boolean success = false;
+        for(int i =0; i < userCoordinates.size(); i++){
+            int[] temp = userCoordinates.get(i);
+            char ch = chars.get(temp[0]);
+            int num = numbers.get(temp[1]);
+            String s = String.valueOf(ch) + num;
+            if (coordinateForShoot.equals(s)) {
+                success = true;
+                // якщо постріл був вдалим:
+                if (!(makeUnPlaceDown(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceDown(coordinateForShoot))) {
+                    potentionalPlacesForShoot.put("down", makeUnPlaceDown(coordinateForShoot));
+                    // зробити недоступними точки зліва та права
+                    unavailablePointsForShooting.add(makeUnPlaceRight(coordinateForShoot));
+                    unavailablePointsForShooting.add(makeUnPlaceLeft(coordinateForShoot));
+
+                    potentionalPlacesForShoot.remove("left");
+                    potentionalPlacesForShoot.remove("right");
+                }
+                break;
+            }
+        }
+
+        // якщо постріл був не вдалим
+        if(!success) potentionalPlacesForShoot.remove("down");
+    }
+
+
+    private String generateCoordinates() { // to generate coordinates for shooting
+        Random random = new Random();
+        int number = random.nextInt(1, 11);
+        int r2 = random.nextInt(1, 11);
+        String coordinate = String.valueOf(chars.get(r2 - 1));
+        coordinate = coordinate + number;
+
+
+        // checking this random coordinate
+        if (!checkCoordinateForShooting(coordinate)) return "again"; // returns "again" to go to this method again
+        // додати точку як недоступну для наступних пострілів
+        unavailablePointsForShooting.add(coordinate);
+
+        // check if this coordinate is a banana
+        for (int i = 0; i < userCoordinates.size(); i++) {
+            int[] temp = userCoordinates.get(i);
+            char ch = chars.get(temp[0]);
+            int num = numbers.get(temp[1]);
+            String s = String.valueOf(ch) + num;
+            if (coordinate.equals(s)) {
+                // якщо це банан, то перевірити точки на попередні постріли й
+                // занести потенційні наступні точки для пострілів в HashMap
+                if (!(makeUnPlaceLeft(coordinate).equals("")) && checkCoordinateForShooting(makeUnPlaceLeft(coordinate))) {
+                    potentionalPlacesForShoot.put("left", makeUnPlaceLeft(coordinate));
+                }
+                if (!(makeUnPlaceRight(coordinate).equals("")) && checkCoordinateForShooting(makeUnPlaceRight(coordinate))) {
+                    potentionalPlacesForShoot.put("right", makeUnPlaceRight(coordinate));
+                }
+                if (!(makeUnPlaceUp(coordinate).equals("")) && checkCoordinateForShooting(makeUnPlaceUp(coordinate))) {
+                    potentionalPlacesForShoot.put("up", makeUnPlaceUp(coordinate));
+                }
+                if (!(makeUnPlaceDown(coordinate).equals("")) && checkCoordinateForShooting(makeUnPlaceDown(coordinate))) {
+                    potentionalPlacesForShoot.put("down", makeUnPlaceDown(coordinate));
+                }
+
+                break;
+            }
+        }
+        // повернути згенеровану точку для вистрілу
+        return coordinate;
+    }
+
+    private boolean checkCoordinateForShooting(String s) { // returns false if this coordinate was already checked and is
+        // unavailable
+        for (String value : unavailablePointsForShooting) {
+            if (s.equals(value)) return false;
+        }
+        return true;
     }
 }

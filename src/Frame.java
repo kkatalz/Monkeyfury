@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Frame extends JFrame {
 
@@ -30,7 +31,7 @@ public class Frame extends JFrame {
     int times = 1;
     int singleDeckAttempts, deckerAmount;
     int previousChosenItem;
-    boolean twoDeckSet, threeDeckSet, fourDeckSet, sixDeckSet = false;
+    boolean twoDeckSet, threeDeckSet, fourDeckSet, sixDeckSet = false, toGiveCoordinates = true;
 
 
     boolean[][] availableCells = new boolean[10][10];
@@ -49,7 +50,6 @@ public class Frame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         showAreasForFight();
-
 
     }
 
@@ -455,7 +455,7 @@ public class Frame extends JFrame {
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -477,7 +477,7 @@ public class Frame extends JFrame {
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -498,8 +498,23 @@ public class Frame extends JFrame {
         if (stringCoordinates.length() == 3) y = 10;
         if (!res) placeBananaInComputerArea(x, y, false);
         else placeBananaInComputerArea(x, y, true);
+
+        // постріл комп'ютера
+        organiseComputerShoot();
     }
 
+    private void organiseComputerShoot(){
+        if(toGiveCoordinates) giveCoordinates();
+        String computerShootCoordinate = compAlgorithm.shoot();
+        char letter = computerShootCoordinate.charAt(0);
+        int x = (int) letter - 96;
+        int y = Character.getNumericValue(computerShootCoordinate.charAt(1));
+        if (computerShootCoordinate.length() == 3) y = 10;
+
+        // визначити результат
+        placeBananaInUserArea(x, y, true);
+
+    }
 
     // змінити значення відповідної змінної
     private boolean makeStatistics(String s) { // повертає false, якщо користувач ще не збив увесь банан
@@ -560,8 +575,8 @@ public class Frame extends JFrame {
 
         String imagePath;
         if (result) {
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
-        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -576,6 +591,37 @@ public class Frame extends JFrame {
 
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
+    }
+
+    private void placeBananaInUserArea(int x, int y, boolean result){ // розташувати банан або шкірку від банана після вистрілу комп'ютера
+        JPanel panel = new JPanel();
+
+        panel.setLayout(null);
+        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
+
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
+
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
+
+        String imagePath;
+        if (result) {
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(scaledIcon);
+        label.setBounds(0, 0, 40, 40);
+
+        panel.add(label);
+
+        areaForUser.setLayout(null);
+        areaForUser.add(panel);
+
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
     }
 
     private boolean checkFormatOfCoordinatesForShooting() {
@@ -696,9 +742,9 @@ public class Frame extends JFrame {
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
 
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -712,9 +758,7 @@ public class Frame extends JFrame {
 
 
         int[] coords = {x - 1, y - 1};
-
         userCoordinates.add(coords);
-
         singleDeckAttempts++;
         attemptsCount++;
 
@@ -797,6 +841,12 @@ public class Frame extends JFrame {
         }
     }
 
+    // передати в клас CompAlgorithm список точок корисувача
+    private void giveCoordinates(){
+        toGiveCoordinates = false;
+        compAlgorithm.setBananas(userCoordinates);
+    }
+
 //    public void addMonkeyImage(String imagePath ){
 //
 //        ImageIcon icon = new ImageIcon(imagePath);
@@ -822,7 +872,7 @@ public class Frame extends JFrame {
             //Path
             // liza:/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
         }
 
         @Override
