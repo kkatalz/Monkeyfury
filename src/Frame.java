@@ -14,8 +14,8 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser, showGameLevel, happyMonkeyLabel, angryMonkeyLabel, monkeyLabel, informationForUserAboutDecker;
-    private JButton level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
+    private JLabel gameLevelLabel, bananasType, informationForUser, coordinateLabel, showGameLevel, happyMonkeyLabel, angryMonkeyLabel, monkeyLabel, informationForUserAboutDecker;
+    private JButton readInstuctions, level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
     private JComboBox<String> listOfBananas;
 
     private JPanel areaForUser, areaForComputer;
@@ -155,7 +155,7 @@ public class Frame extends JFrame {
         }
 
         //INSTRUCTION BUTTON
-        JButton readInstuctions = new JButton("Інструкція");
+        readInstuctions = new JButton("Інструкція");
         readInstuctions.setBackground(Color.white);
         readInstuctions.setForeground(Color.black);
         readInstuctions.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT, PANEL_Y_FROM_TOP, 100, 50);
@@ -245,7 +245,7 @@ public class Frame extends JFrame {
         backgroundPanel.add(listOfBananas);
 
         //COORDINATE LABEL
-        JLabel coordinateLabel = new JLabel("Напишіть координати (a8)");
+        coordinateLabel = new JLabel("Напишіть координати (a8)");
         coordinateLabel.setForeground(Color.black);
         coordinateLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
         coordinateLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 45, PANEL_Y_FROM_TOP + 320, 275, 50);
@@ -289,8 +289,6 @@ public class Frame extends JFrame {
         informationForUserAboutDecker.setForeground(Color.white);
         informationForUserAboutDecker.setFont(new Font("f", Font.PLAIN, 17));
         backgroundPanel.add(informationForUserAboutDecker);
-
-
 
 
         //Check if coordinates are written in correct format
@@ -397,7 +395,7 @@ public class Frame extends JFrame {
         start.addActionListener(e -> {
 
             //ПЕРЕВІРКА, ЧИ ВСІ КОРАБЛІ РОЗСТАВЛЕНІ
-            if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {
+            if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !
                 String whichDeckIsnotPlaced = "Не розставлені палуби: ";
                 if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
                 if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
@@ -409,7 +407,7 @@ public class Frame extends JFrame {
             } else if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                if (levelOfGame == 1) numberOfSteps = 70;
+                if (levelOfGame == 1) numberOfSteps = 70; //ТУТ БУЛО 70
                 else if (levelOfGame == 2) numberOfSteps = 54;
                 else numberOfSteps = 24;
                 showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
@@ -435,7 +433,6 @@ public class Frame extends JFrame {
 
     // дії у разі вистрілу користувачем
 
-
     private void toShoot() {
         if (!checkFormatOfCoordinatesForShooting()) {
             JOptionPane.showMessageDialog(backgroundPanel, "Невірно введені координати або задані координати були задані раніше", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -451,6 +448,7 @@ public class Frame extends JFrame {
             informationForUser.setText("Ви не влучили в кошик з бананами!");
             numberOfSteps--;
             showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
+
 
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
@@ -490,7 +488,32 @@ public class Frame extends JFrame {
             monkeyLabel = new JLabel(scaledIcon);
             monkeyLabel.setBounds(FRAME_WIDTH - 260, 130, 80, 80);
             backgroundPanel.add(monkeyLabel);
+        }//КОЛИ КІЛЬКІСТЬ ХОДІВ = 0, ГРА ЗАКІНЧУЄТЬСЯ
+        if (numberOfSteps == 0) {
+            // Delay the execution of the dialog using a separate thread
+            SwingUtilities.invokeLater(() -> {
+                int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви програли:(" +
+                                "<br>Ходів більше немає" +
+                                "<br>Хочете повторити ще раз?(дані будуть втрачені)</center>",
+                        "Програш", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE,
+                        null, new Object[]{"Так", "Ні"}, "OK");
+
+                if (option == JOptionPane.YES_OPTION) {
+                   //TO FINISH
+                } else if (option == JOptionPane.NO_OPTION) {
+                    backgroundPanel.removeAll();
+                    backgroundPanel.revalidate();
+                    backgroundPanel.repaint();
+
+                    informationForUser = new JLabel("THE END~");
+                    informationForUser.setBounds(FRAME_WIDTH / 2-100, FRAME_HEIGHT / 2 - 50, 250, 50);
+                    informationForUser.setForeground(Color.black);
+                    informationForUser.setFont(new Font("Segoe Script", Font.PLAIN, 25));
+                    backgroundPanel.add(informationForUser);
+                }
+            });
         }
+
 
         char letter = stringCoordinates.charAt(0);
         int x = (int) letter - 96;
@@ -503,8 +526,8 @@ public class Frame extends JFrame {
         organiseComputerShoot();
     }
 
-    private void organiseComputerShoot(){
-        if(toGiveCoordinates) giveCoordinates();
+    private void organiseComputerShoot() {
+        if (toGiveCoordinates) giveCoordinates();
         String computerShootCoordinate = compAlgorithm.shoot();
         char letter = computerShootCoordinate.charAt(0);
         int x = (int) letter - 96;
@@ -593,7 +616,7 @@ public class Frame extends JFrame {
 
     }
 
-    private void placeBananaInUserArea(int x, int y, boolean result){ // розташувати банан або шкірку від банана після вистрілу комп'ютера
+    private void placeBananaInUserArea(int x, int y, boolean result) { // розташувати банан або шкірку від банана після вистрілу комп'ютера
         JPanel panel = new JPanel();
 
         panel.setLayout(null);
@@ -842,7 +865,7 @@ public class Frame extends JFrame {
     }
 
     // передати в клас CompAlgorithm список точок корисувача
-    private void giveCoordinates(){
+    private void giveCoordinates() {
         toGiveCoordinates = false;
         compAlgorithm.setBananas(userCoordinates);
     }
