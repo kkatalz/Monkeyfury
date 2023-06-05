@@ -534,7 +534,6 @@ public class Frame extends JFrame {
         int y = Character.getNumericValue(computerShootCoordinate.charAt(1));
         if (computerShootCoordinate.length() == 3) y = 10;
 
-        boolean demo = compAlgorithm.checkIfShootSuccessful();
         if(compAlgorithm.checkIfShootSuccessful()) placeBananaInUserArea(x, y, true);
         else if(!compAlgorithm.checkIfShootSuccessful())  placeBananaInUserArea(x, y, false);
         // визначити результат
@@ -636,10 +635,8 @@ public class Frame extends JFrame {
             removeBananaInUserArea(x, y);
 
             imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
-            informationForUser.setText("Ваш суперник знайшов ваш банан!");
         } else {
             imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
-            informationForUser.setText("Ваш суперник не знайшов ваш банан!");
         }
 
         ImageIcon icon = new ImageIcon(imagePath);
