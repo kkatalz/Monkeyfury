@@ -19,6 +19,7 @@ public class CompAlgorithm {
     private Map<String, String> potentionalPlacesForShoot = new HashMap<>();
     private ArrayList<int[]> userCoordinates = new ArrayList<>();
     private String coordinateForShoot;
+    private boolean success;
 
     CompAlgorithm() {
         setup();
@@ -1278,6 +1279,10 @@ public class CompAlgorithm {
         return coordinateForShoot;
     }
 
+    public boolean checkIfShootSuccessful(){
+        return success;
+    }
+
     public void decideNextStepsForShooting() {
         if (potentionalPlacesForShoot.isEmpty()) { // якщо немає жодних потенційних точок для вистрілу
             do {
@@ -1295,7 +1300,7 @@ public class CompAlgorithm {
         coordinateForShoot = potentionalPlacesForShoot.get("left");
         unavailablePointsForShooting.add(coordinateForShoot);
         // вистрілити
-        boolean success = false;
+         success = false;
         // вставити метод, який каже, чи ця точка є бананом (постріл був вдалим)
         for (int i = 0; i < userCoordinates.size(); i++) {
             int[] temp = userCoordinates.get(i);
@@ -1304,6 +1309,8 @@ public class CompAlgorithm {
             String s = String.valueOf(ch) + num;
             if (coordinateForShoot.equals(s)) {
                 success = true;
+
+                potentionalPlacesForShoot.remove("left");
                 // якщо постріл був вдалим:
                 if (!(makeUnPlaceLeft(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceLeft(coordinateForShoot))) {
                     potentionalPlacesForShoot.put("left", (makeUnPlaceLeft(coordinateForShoot)));
@@ -1324,11 +1331,15 @@ public class CompAlgorithm {
 
     private void shootPotentionlaPlaceRight() {
         coordinateForShoot = potentionalPlacesForShoot.get("right");
+        System.out.println("-----------------------------");
+        System.out.println("Координата для пострілу: " + coordinateForShoot);
+        System.out.println("-----------------------------");
+
         unavailablePointsForShooting.add(coordinateForShoot);
         // вистрілити
 
         // вставити метод, який каже, чи ця точка є бананом (постріл був вдалим)
-        boolean success = false;
+         success = false;
         for (int i = 0; i < userCoordinates.size(); i++) {
             int[] temp = userCoordinates.get(i);
             char ch = chars.get(temp[0]);
@@ -1337,6 +1348,8 @@ public class CompAlgorithm {
             if (coordinateForShoot.equals(s)) {
                 success = true;
                 // якщо постріл був вдалим:
+                potentionalPlacesForShoot.remove("right");
+
                 if (!(makeUnPlaceRight(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceRight(coordinateForShoot))) {
                     potentionalPlacesForShoot.put("right", makeUnPlaceRight(coordinateForShoot));
                     // зробити недоступними точки згори та знизу
@@ -1362,7 +1375,7 @@ public class CompAlgorithm {
 
         // вставити метод, який каже, чи ця точка є бананом (постріл був вдалим)
 
-        boolean success = false;
+         success = false;
         for (int i = 0; i < userCoordinates.size(); i++) {
             int[] temp = userCoordinates.get(i);
             char ch = chars.get(temp[0]);
@@ -1371,6 +1384,9 @@ public class CompAlgorithm {
             if (coordinateForShoot.equals(s)) {
                 success = true;
                 // якщо постріл був вдалим:
+
+                potentionalPlacesForShoot.remove("up");
+
                 if (!(makeUnPlaceUp(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceUp(coordinateForShoot))) {
                     potentionalPlacesForShoot.put("up", makeUnPlaceUp(coordinateForShoot));
                     // зробити недоступними точки зліва та права
@@ -1394,7 +1410,7 @@ public class CompAlgorithm {
         unavailablePointsForShooting.add(coordinateForShoot);
         // вистрілити
 
-        boolean success = false;
+         success = false;
         for(int i =0; i < userCoordinates.size(); i++){
             int[] temp = userCoordinates.get(i);
             char ch = chars.get(temp[0]);
@@ -1402,6 +1418,7 @@ public class CompAlgorithm {
             String s = String.valueOf(ch) + num;
             if (coordinateForShoot.equals(s)) {
                 success = true;
+                potentionalPlacesForShoot.remove("down");
                 // якщо постріл був вдалим:
                 if (!(makeUnPlaceDown(coordinateForShoot).equals("")) && checkCoordinateForShooting(makeUnPlaceDown(coordinateForShoot))) {
                     potentionalPlacesForShoot.put("down", makeUnPlaceDown(coordinateForShoot));
@@ -1433,7 +1450,7 @@ public class CompAlgorithm {
         if (!checkCoordinateForShooting(coordinate)) return "again"; // returns "again" to go to this method again
         // додати точку як недоступну для наступних пострілів
         unavailablePointsForShooting.add(coordinate);
-
+        success = false;
         // check if this coordinate is a banana
         for (int i = 0; i < userCoordinates.size(); i++) {
             int[] temp = userCoordinates.get(i);
@@ -1441,6 +1458,7 @@ public class CompAlgorithm {
             int num = numbers.get(temp[1]);
             String s = String.valueOf(ch) + num;
             if (coordinate.equals(s)) {
+                success = true;
                 // якщо це банан, то перевірити точки на попередні постріли й
                 // занести потенційні наступні точки для пострілів в HashMap
                 if (!(makeUnPlaceLeft(coordinate).equals("")) && checkCoordinateForShooting(makeUnPlaceLeft(coordinate))) {
