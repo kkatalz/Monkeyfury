@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Frame extends JFrame {
 
@@ -25,7 +24,8 @@ public class Frame extends JFrame {
     private CompAlgorithm compAlgorithm;
     private ArrayList<String> shootedPlaces = new ArrayList<>();
     private ArrayList<int[]> userCoordinates = new ArrayList<>();
-    private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4;
+    private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4, numberOfSuccessfulShotsOfUser;
+    private int numberOfSuccessfulShotsOfComputer;
     int BOARD_WIDTH = 10;
     int BOARD_HEIGHT = 10;
     int attemptsCount = 0;
@@ -463,7 +463,7 @@ public class Frame extends JFrame {
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -481,11 +481,13 @@ public class Frame extends JFrame {
             res = true;
             if (!makeStatistics(check)) informationForUser.setText("Ви влучили у кошик з бананами!");
             else informationForUser.setText("Ви знайшли увесь кошик з бананами!");
+            // збільшити кількість вдалих пострілів користувача
+            numberOfSuccessfulShotsOfUser++;
 
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -500,8 +502,8 @@ public class Frame extends JFrame {
             backgroundPanel.add(monkeyLabel);
 
 
-        }//КОЛИ КІЛЬКІСТЬ ХОДІВ = 0, ГРА ЗАКІНЧУЄТЬСЯ. ПРОГРАШ
-        if (numberOfSteps != 0) {
+        }//КОЛИ КІЛЬКІСТЬ ХОДІВ = 0 АБО ВИГРАВ КОМП'ЮТЕР, ГРА ЗАКІНЧУЄТЬСЯ. ПРОГРАШ
+        if (numberOfSteps == 0 || numberOfSuccessfulShotsOfComputer == 31) {
             // Delay the execution of the dialog using a separate thread
             SwingUtilities.invokeLater(() -> {
                 int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви програли:(" +
@@ -531,7 +533,7 @@ public class Frame extends JFrame {
             });
 
             //ПЕРЕМОГА КОРИСТУВАЧА
-        } else if (numberOfSteps > 0) { //ОСЬ ТУТ numberOfSteps>0 && [щось,що означає: всі банани користувач знайшов]
+        } else if (numberOfSteps > 0 && numberOfSuccessfulShotsOfUser == 31) { //ОСЬ ТУТ numberOfSteps>0 && [щось,що означає: всі банани користувач знайшов]
 
             SwingUtilities.invokeLater(() -> {
                 int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви перемогли!!" +
@@ -648,8 +650,8 @@ public class Frame extends JFrame {
 
         String imagePath;
         if (result) {
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
-        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -682,10 +684,12 @@ public class Frame extends JFrame {
         if (result) {
             // new
             removeBananaInUserArea(x, y);
+            // збільшити кількість вдалих ходів комп'ютера
+            numberOfSuccessfulShotsOfComputer++;
 
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\redBanana.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg";
         } else {
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
         }
 
         ImageIcon icon = new ImageIcon(imagePath);
@@ -820,9 +824,9 @@ public class Frame extends JFrame {
         panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
 
 
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\redBanana.jpeg
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\redBanana.jpeg";
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -955,7 +959,8 @@ public class Frame extends JFrame {
 //    }
 
     public void happyMonkeyImage() {
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -978,7 +983,7 @@ public class Frame extends JFrame {
             //Path
             // liza:/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
         }
 
         @Override
