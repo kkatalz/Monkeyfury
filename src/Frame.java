@@ -14,7 +14,7 @@ public class Frame extends JFrame {
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser, coordinateLabel, showGameLevel, happyMonkeyLabel, angryMonkeyLabel, monkeyLabel, informationForUserAboutDecker;
+    private JLabel gameLevelLabel, bananasType, informationForUser, coordinateLabel, showGameLevel, compOrUserSuccess, monkeyLabel, informationForUserAboutDecker;
     private JButton readInstuctions, level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
     private JComboBox<String> listOfBananas;
 
@@ -25,7 +25,7 @@ public class Frame extends JFrame {
     private ArrayList<String> shootedPlaces = new ArrayList<>();
     private ArrayList<int[]> userCoordinates = new ArrayList<>();
     private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4, numberOfSuccessfulShotsOfUser;
-    private int numberOfSuccessfulShotsOfComputer;
+    private int numberOfSuccessfulShotsOfComputer;// ПРИБРАТИ 29
     int BOARD_WIDTH = 10;
     int BOARD_HEIGHT = 10;
     int attemptsCount = 0;
@@ -405,7 +405,7 @@ public class Frame extends JFrame {
         start.addActionListener(e -> {
 
             //ПЕРЕВІРКА, ЧИ ВСІ КОРАБЛІ РОЗСТАВЛЕНІ
-            if (twoDeckSet || threeDeckSet || fourDeckSet || sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet
+            if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet
                 String whichDeckIsnotPlaced = "Не розставлені палуби: ";
                 if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
                 if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
@@ -417,7 +417,7 @@ public class Frame extends JFrame {
             } else if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                if (levelOfGame == 1) numberOfSteps = 1; //ТУТ БУЛО 70 -> numberOfSteps = 70
+                if (levelOfGame == 1) numberOfSteps = 70; //ТУТ БУЛО 70 -> numberOfSteps = 70
                 else if (levelOfGame == 2) numberOfSteps = 54;
                 else numberOfSteps = 24;
                 showGameLevel.setText("<html> Обраний рівень гри - " + levelOfGame + "<br> Кількість кроків: " + numberOfSteps);
@@ -433,6 +433,15 @@ public class Frame extends JFrame {
                 backgroundPanel.remove(bananasType);
                 backgroundPanel.remove(listOfBananas);
                 backgroundPanel.add(shootButton);
+
+                //ІНФОРМАЦІЯ ПРО УСПІХ:
+                compOrUserSuccess = new JLabel();
+                compOrUserSuccess.setBounds(FRAME_WIDTH - 290, 250, 200, 100);
+                compOrUserSuccess.setForeground(Color.black);
+                compOrUserSuccess.setFont(new Font("Calibri", Font.PLAIN, 17));
+                backgroundPanel.add(compOrUserSuccess);
+                SwingUtilities.updateComponentTreeUI(compOrUserSuccess);
+
                 SwingUtilities.updateComponentTreeUI(backgroundPanel);
             }
 
@@ -440,6 +449,51 @@ public class Frame extends JFrame {
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
     }
+
+
+    private void placeBananaInUserArea(int x, int y, boolean result) { // розташувати банан або шкірку від банана після вистрілу комп'ютера
+        JPanel panel = new JPanel();
+
+        panel.setLayout(null);
+        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
+
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg
+        // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
+
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\redBanana.jpeg
+        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
+
+        String imagePath;
+        if (result) {
+            // new
+            removeBananaInUserArea(x, y);
+            // збільшити кількість вдалих ходів комп'ютера
+            numberOfSuccessfulShotsOfComputer++;
+
+            compOrUserSuccess.setText("<html><center>Результати <br>" + "Ваші: " +
+                    numberOfSuccessfulShotsOfUser + "/31 <br> Комп'ютера: " + numberOfSuccessfulShotsOfComputer + "/31"
+            );
+
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\redBanana.jpeg";
+        } else {
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+        }
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(scaledIcon);
+        label.setBounds(0, 0, 40, 40);
+
+        panel.add(label);
+
+        areaForUser.setLayout(null);
+        areaForUser.add(panel);
+
+
+        SwingUtilities.updateComponentTreeUI(backgroundPanel);
+    }
+
 
     // дії у разі вистрілу користувачем
 
@@ -449,6 +503,7 @@ public class Frame extends JFrame {
             return;
         }
         String stringCoordinates = typeCoordinate.getText();
+
 
         // дізнатися, чи користувач влучив у банан
         String check = compAlgorithm.isABanana(stringCoordinates);
@@ -463,7 +518,7 @@ public class Frame extends JFrame {
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
-            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg";
+            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -484,10 +539,11 @@ public class Frame extends JFrame {
             // збільшити кількість вдалих пострілів користувача
             numberOfSuccessfulShotsOfUser++;
 
+
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
+            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -506,34 +562,16 @@ public class Frame extends JFrame {
         if (numberOfSteps == 0 || numberOfSuccessfulShotsOfComputer == 31) {
             // Delay the execution of the dialog using a separate thread
             SwingUtilities.invokeLater(() -> {
-                int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви програли:(" +
-                                "<br>Ходів більше немає" +
-                                "<br>Хочете повторити ще раз?(дані будуть втрачені)</center>",
-                        "Програш", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE,
-                        null, new Object[]{"Так", "Ні"}, "OK");
 
-                if (option == JOptionPane.YES_OPTION) {
-                    restart();
-
-
-                } else if (option == JOptionPane.NO_OPTION) {
-                    backgroundPanel.removeAll();
-                    backgroundPanel.revalidate();
-                    backgroundPanel.repaint();
-
-                    informationForUser = new JLabel("THE END~");
-                    informationForUser.setBounds(FRAME_WIDTH / 2 - 100, FRAME_HEIGHT / 2 - 50, 250, 50);
-                    informationForUser.setForeground(Color.black);
-                    informationForUser.setFont(new Font("Segoe Script", Font.PLAIN, 25));
-                    backgroundPanel.add(informationForUser);
-
-                    happyMonkeyImage();
-
+                if (numberOfSteps == 0) {
+                    lostMessage("Ходів більше немає");
+                } else {
+                    lostMessage("Комп'ютер знайшов всі ваші кораблі:( ");
                 }
             });
 
             //ПЕРЕМОГА КОРИСТУВАЧА
-        } else if (numberOfSteps > 0 && numberOfSuccessfulShotsOfUser == 31) { //ОСЬ ТУТ numberOfSteps>0 && [щось,що означає: всі банани користувач знайшов]
+        } else if (numberOfSteps > 0 && numberOfSuccessfulShotsOfUser == 31) {
 
             SwingUtilities.invokeLater(() -> {
                 int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви перемогли!!" +
@@ -563,6 +601,9 @@ public class Frame extends JFrame {
             });
 
         }
+        compOrUserSuccess.setText("<html><center>Результати <br>" + "Ваші: " +
+                numberOfSuccessfulShotsOfUser + "/31 <br> Комп'ютера: " + numberOfSuccessfulShotsOfComputer + "/31"
+        );
 
 
         char letter = stringCoordinates.charAt(0);
@@ -644,14 +685,15 @@ public class Frame extends JFrame {
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
 
+        //zlata:
         //    if (result) {
         //            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
         //        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
 
         String imagePath;
         if (result) {
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
-        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
+            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -668,43 +710,6 @@ public class Frame extends JFrame {
 
     }
 
-    private void placeBananaInUserArea(int x, int y, boolean result) { // розташувати банан або шкірку від банана після вистрілу комп'ютера
-        JPanel panel = new JPanel();
-
-        panel.setLayout(null);
-        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
-
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg
-        // liza: /home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg
-
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\redBanana.jpeg
-        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\peel.jpeg
-
-        String imagePath;
-        if (result) {
-            // new
-            removeBananaInUserArea(x, y);
-            // збільшити кількість вдалих ходів комп'ютера
-            numberOfSuccessfulShotsOfComputer++;
-
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg";
-        } else {
-            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
-        }
-
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        JLabel label = new JLabel(scaledIcon);
-        label.setBounds(0, 0, 40, 40);
-
-        panel.add(label);
-
-        areaForUser.setLayout(null);
-        areaForUser.add(panel);
-
-        SwingUtilities.updateComponentTreeUI(backgroundPanel);
-    }
 
     private boolean checkFormatOfCoordinatesForShooting() {
         //  typeCoordinate
@@ -732,32 +737,6 @@ public class Frame extends JFrame {
         shootedPlaces.add(s);
         return true;
     }
-
-//    public void placeBanana(int x, int y) {
-//        JPanel panel = new JPanel();
-//
-//        panel.setLayout(null); // Set the layout manager to null for absolute positioning
-//        panel.setBounds((x - 1) * BANANA_WIDTH, (y - 1) * BANANA_WIDTH, 40, 40);
-//
-//        // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpg
-//        // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-//
-//        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
-//        ImageIcon icon = new ImageIcon(imagePath);
-//        Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-//        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-//        JLabel label = new JLabel(scaledIcon);
-//        label.setBounds(0, 0, 40, 40); // Manually set the bounds of the label
-//
-//        panel.add(label); // Add the label to the panel
-//
-//        areaForUser.setLayout(null);
-//        areaForUser.add(panel);
-//
-//        SwingUtilities.updateComponentTreeUI(backgroundPanel);
-//
-//    }
-
 
     //the method that makes unavailable points around single point
     public void setUnavailiablePoints(int x, int y) {
@@ -826,7 +805,7 @@ public class Frame extends JFrame {
 
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -947,20 +926,37 @@ public class Frame extends JFrame {
         compAlgorithm.setBananas(userCoordinates);
     }
 
-//    public void addMonkeyImage(String imagePath ){
-//
-//        ImageIcon icon = new ImageIcon(imagePath);
-//        Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-//        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-//        JLabel label = new JLabel(scaledIcon);
-//        label.setBounds(FRAME_WIDTH - 260, 130, 80, 80);
-//
-//        backgroundPanel.add(label);
-//    }
+    public void lostMessage(String reasonOfDefeat) {
+        int option = JOptionPane.showOptionDialog(backgroundPanel, "<html><center>Ви програли:(" +
+                        "<br>" + reasonOfDefeat +
+                        "<br>Хочете повторити ще раз?(дані будуть втрачені)</center>",
+                "Програш", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE,
+                null, new Object[]{"Так", "Ні"}, "OK");
+
+        if (option == JOptionPane.YES_OPTION) {
+            restart();
+
+
+        } else if (option == JOptionPane.NO_OPTION) {
+            backgroundPanel.removeAll();
+            backgroundPanel.revalidate();
+            backgroundPanel.repaint();
+
+            informationForUser = new JLabel("THE END~");
+            informationForUser.setBounds(FRAME_WIDTH / 2 - 100, FRAME_HEIGHT / 2 - 50, 250, 50);
+            informationForUser.setForeground(Color.black);
+            informationForUser.setFont(new Font("Segoe Script", Font.PLAIN, 25));
+            backgroundPanel.add(informationForUser);
+
+            happyMonkeyImage();
+
+        }
+    }
 
     public void happyMonkeyImage() {
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
+        //zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
+        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -983,7 +979,7 @@ public class Frame extends JFrame {
             //Path
             // liza:/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
         }
 
         @Override
