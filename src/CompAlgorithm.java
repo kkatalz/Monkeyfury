@@ -5,8 +5,6 @@ import java.util.logging.*;
 // to create computer's algorithm for placement bananas
 public class CompAlgorithm {
     private static final Logger LOGGER = Logger.getLogger(CompAlgorithm.class.getName());
-    // for demo version
-    ArrayList<String> coordinatesDemo = new ArrayList<>();
     Frame frame;
     private ArrayList<Integer> numbers;
     private ArrayList<Character> chars;
@@ -28,16 +26,6 @@ public class CompAlgorithm {
             b = placeBananas();
         } while (!b);
         setLogger();
-
-        // demo
-        coordinatesDemo.add("a1");
-        coordinatesDemo.add("b1");
-        // demo
-        //frame = new Frame();
-    }
-
-    public static void main(String[] args) {
-        new CompAlgorithm();
 
     }
 

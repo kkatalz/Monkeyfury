@@ -112,3 +112,161 @@ Jun 06, 2023 3:33:19 PM CompAlgorithm setLogger
 INFO: Number of unsuccessful efforts to place a banana: 45
 Jun 06, 2023 3:37:50 PM CompAlgorithm setLogger
 INFO: Number of unsuccessful efforts to place a banana: 44
+Jun 06, 2023 3:02:09 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 109
+Jun 06, 2023 3:18:26 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 46
+Jun 06, 2023 3:23:10 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 34
+Jun 06, 2023 3:55:40 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 73
+Jun 06, 2023 4:21:13 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 143
+Jun 06, 2023 4:25:23 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 42
+Jun 06, 2023 4:26:07 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 81
+Jun 06, 2023 4:27:07 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 170
+Jun 06, 2023 5:38:46 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 78
+Jun 06, 2023 5:48:51 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 158
+Jun 06, 2023 5:55:15 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 10
+Jun 06, 2023 6:13:10 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 19
+Jun 06, 2023 6:14:45 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 41
+Jun 06, 2023 6:15:31 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 56
+Jun 06, 2023 6:16:03 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 06, 2023 6:16:03 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 06, 2023 6:16:03 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 33
+Jun 06, 2023 6:18:05 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 140
+Jun 06, 2023 6:19:33 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 35
+Jun 06, 2023 6:20:15 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 74
+Jun 06, 2023 6:21:56 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 45
+Jun 06, 2023 10:17:00 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 52
+Jun 07, 2023 9:18:40 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 23
+Jun 07, 2023 9:58:20 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 53
+Jun 07, 2023 2:45:07 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 07, 2023 2:45:07 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 63
+Jun 10, 2023 3:04:27 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 122
+Jun 10, 2023 3:21:03 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 157
+Jun 13, 2023 12:17:16 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 90
+Jun 13, 2023 12:18:20 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 42
+Jun 13, 2023 12:20:30 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 72
+Jun 13, 2023 12:52:32 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 18
+Jun 13, 2023 1:24:59 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 27
+Jun 13, 2023 2:56:17 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 21
+Jun 13, 2023 9:10:39 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 30
+Jun 13, 2023 9:27:34 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 58
+Jun 14, 2023 10:16:28 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 111
+Jun 14, 2023 10:29:28 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 141
+Jun 15, 2023 3:16:19 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 48
+Jun 15, 2023 3:29:37 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 60
+Jun 15, 2023 3:43:31 PM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jun 15, 2023 3:43:31 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 58
+Jun 16, 2023 5:03:55 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 69
+Jun 16, 2023 5:14:14 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 53
+Jun 17, 2023 11:36:20 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 57
+Jun 17, 2023 8:11:08 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 141
+Jun 17, 2023 11:07:34 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 33
+Jun 19, 2023 12:59:45 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 74
+Jun 19, 2023 1:11:21 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 69
+Jun 20, 2023 3:47:00 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 91
+Jun 20, 2023 3:57:00 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 35
+Jun 21, 2023 1:14:42 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 114
+Jun 21, 2023 1:26:07 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 39
+Jun 21, 2023 1:36:34 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 73
+Jun 21, 2023 1:47:04 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 89
+Jun 21, 2023 4:12:17 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 48
+Jun 21, 2023 4:22:56 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 27
+Jun 21, 2023 4:45:47 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 27
+Jun 21, 2023 10:23:07 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 33
+Jun 22, 2023 2:38:26 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 42
+Jun 22, 2023 8:01:47 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 16
+Jun 23, 2023 11:13:40 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 119
+Jun 24, 2023 3:28:10 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 45
+Jun 25, 2023 4:31:07 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 92
+Jun 26, 2023 10:50:54 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 38
+Jun 28, 2023 6:01:57 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 93
+Jun 29, 2023 1:29:08 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 37
+Jul 02, 2023 1:17:27 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 56
+Jul 03, 2023 12:26:27 PM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 70
+Jul 04, 2023 10:58:07 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 47
+Jul 04, 2023 11:03:49 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 35
+Jul 04, 2023 11:04:49 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 66
+Jul 04, 2023 11:05:15 AM CompAlgorithm setLogger
+WARNING: Number of unsuccessful efforts to place a banana was more than limit: 200
+Jul 04, 2023 11:05:15 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 42
+Jul 04, 2023 11:07:35 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 93
+Jul 04, 2023 11:08:11 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 55
+Jul 04, 2023 11:09:52 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 198
+Jul 04, 2023 11:13:24 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 50
+Jul 04, 2023 11:14:01 AM CompAlgorithm setLogger
+INFO: Number of unsuccessful efforts to place a banana: 61

@@ -5,27 +5,16 @@ import java.util.ArrayList;
 
 public class Frame extends JFrame {
 
-    public int levelOfGame;
-    public byte numberOfSteps;
     public static final int FRAME_WIDTH = 1350;
     public static final int FRAME_HEIGHT = 700;
     public static final int PANEL_FOR_FIGHT_WIDTH_HEIGHT = 400;
     public static final int PANEL_Y_FROM_TOP = 50;
     public static final int PANEL_X_FROM_BORDER = 40;
     public static final Color PANEL_BACKGROUND_COLOR = Color.white;
+    public int levelOfGame;
+    public byte numberOfSteps;
     public byte BANANA_WIDTH = 40;
-    private JLabel gameLevelLabel, bananasType, informationForUser, coordinateLabel, showGameLevel, compOrUserSuccess, monkeyLabel, informationForUserAboutDecker;
-    private JButton readInstuctions, level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
-    private JComboBox<String> listOfBananas;
-
-    private JPanel areaForUser, areaForComputer;
-    private JTextField typeCoordinate;
     public BackgroundPanel backgroundPanel;
-    private CompAlgorithm compAlgorithm;
-    private ArrayList<String> shootedPlaces = new ArrayList<>();
-    private ArrayList<int[]> userCoordinates = new ArrayList<>();
-    private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4, numberOfSuccessfulShotsOfUser;
-    private int numberOfSuccessfulShotsOfComputer;// ПРИБРАТИ 29
     int BOARD_WIDTH = 10;
     int BOARD_HEIGHT = 10;
     int attemptsCount = 0;
@@ -33,10 +22,18 @@ public class Frame extends JFrame {
     int singleDeckAttempts, deckerAmount;
     int previousChosenItem;
     boolean twoDeckSet, threeDeckSet, fourDeckSet, sixDeckSet = false, toGiveCoordinates = true;
-
-
     boolean[][] availableCells = new boolean[10][10];
     JPanel[][] bananaPanels = new JPanel[BOARD_WIDTH + 1][BOARD_HEIGHT + 1];
+    private JLabel gameLevelLabel, bananasType, informationForUser, coordinateLabel, showGameLevel, compOrUserSuccess, monkeyLabel, informationForUserAboutDecker;
+    private JButton readInstuctions, level1Button, level2Button, level3Button, start, putBanana, shootButton, deleteBanana;
+    private JComboBox<String> listOfBananas;
+    private JPanel areaForUser, areaForComputer;
+    private JTextField typeCoordinate;
+    private CompAlgorithm compAlgorithm;
+    private ArrayList<String> shootedPlaces = new ArrayList<>();
+    private ArrayList<int[]> userCoordinates = new ArrayList<>();
+    private int p6, p4, p4n2, p3n1, p3n2, p3n3, p2n1, p2n2, p2n3, p2n4, numberOfSuccessfulShotsOfUser;
+    private int numberOfSuccessfulShotsOfComputer;// ПРИБРАТИ 29
 
 
     Frame() {
@@ -61,6 +58,11 @@ public class Frame extends JFrame {
             e.printStackTrace();
         }
         System.exit(0);
+    }
+
+    public static void main(String[] args) {
+        new Frame();
+
     }
 
     public void showAreasForFight() {
@@ -168,27 +170,44 @@ public class Frame extends JFrame {
         readInstuctions = new JButton("Інструкція");
         readInstuctions.setBackground(Color.white);
         readInstuctions.setForeground(Color.black);
-        readInstuctions.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT, PANEL_Y_FROM_TOP, 100, 50);
+        readInstuctions.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT, PANEL_Y_FROM_TOP, 150, 50);
         backgroundPanel.add(readInstuctions);
         JFrame instruction = new JFrame();
         instruction.setSize(460, 460);
         instruction.setLocationRelativeTo(null);
         JTextArea textInstruction = new JTextArea(
-                "1. Гравці:  Квадрат ліворуч - належить комп’ютеру , другий-користувачу.\n" +
-                        "\n2. Розташування та кількість мавпячих кораблів: Кожен гравець має 10 кораблів(один шестипалубний, 2 чотирипалубних, 3 трипалубних, 4 двопалубних). Для гри, необхідно розмістити кораблі горизонтально або вертикально, так, щоб вони не торкались один одного . Користувач має розмістити 10 кораблів тільки на своїй частині прямокутника - лівому квадраті. Розташування кораблів комп'ютера заповнюється автоматично. Праворуч від поля бою знаходиться список , у якому відображаються види кораблів, їх кількість і кількість клітинок, які відводяться для конкретного корабля(1 палуба=1 клітинка. Відповідно, для розміщення шестипалубного корабля необхідно вести координати 6-ти послідовних клітинок(формат: а8), які заповнюються бананами). У разі неправильно розташування, користувач може стерти корабель - нажавши на кнопку 'прибрати' і вести координати.\n" +
+                """
+                        1. Гравці:  Квадрат ліворуч - належить комп’ютеру , другий-користувачу.""" + "\n" +
+                         ". Розташування та кількість мавпячих бананів: " + "\n \n" +  "Кожен гравець має 10 кошиків із " +
+                        "бананами(один шестипалубний, 2 чотирипалубних, 3 трипалубних, 4 двопалубних)." +  "\n" + "\n" +
+                        "Для гри, необхідно " +
+                        "розмістити банани горизонтально або вертикально, так, щоб вони не торкались один одного. " +
+                        "Користувач має розмістити 10 кошиків тільки на своїй частині прямокутника - лівому квадраті. " +  "\n" + "\n" +
+                        "Розташування бананів комп'ютера заповнюється автоматично." + "\n" +  "Праворуч від поля бою знаходиться список ," +
+                        " у якому відображаються види кошиків із бананами, їх кількість і кількість клітинок, які " +
+                        "відводяться для конкретного банана(1 палуба=1 клітинка." +  "\n" + "\n" + "Відповідно, для розміщення кошику з " +
+                        "6-ти бананами необхідно вести координати 6-ти послідовних клітинок(формат: а8), які " +
+                        "заповнюються бананами)." +  "\n" + "\n" + "У разі неправильно розташування, користувач може стерти корабель - " +
+                        "натиснувши на кнопку 'прибрати' і ввести координати." +
+                        "\n" + "\n" +
+                        ".Влучання: Кількість влучань обмежена(про їх кількість свідчитиме лічильник). Із збільшенням рівня складності," +
+                        "  кількість ходів у користувача зменшується. У ході гри кількість ходів зменшується тільки тоді, " +
+                        "коли гравець не знайшов банани противника." +  "\n" + "\n" + "Після пострілу гравцю повідомляється результат: " +
+                        "'знайдено-забрано повністю', 'знайдено один банан' або 'промахнулись '. У разі “знайдено” - " +
+                        "банан змінить колір на червоний і Ви маєте ходити ще раз, поки не промахнетесь; “промахнулись ”" +
+                        "-користувач побачить повідомлення “банана на цій клітинці немає” і гра продовжується; " +  "\n" + "\n" + "коли ж " +
+                        "користувач потопить корабель, з'явиться повідомлення  ”Ваш корабель потоплено/ потоплено " +
+                        "корабель супротивника !” " +  "\n" + "\n" + "Гра триває до моменту, коли мавпочка не знайде всі банани іншої." +
+                        "\n \n" +
+                        ". Рівні складності: гра містить три рівні складності, позначені чорними кружечками в куті екрана." +
                         "\n" +
-                        "\n3. Влучання: Кількість влучань обмежена(про їх кількість свідчитиме лічильник). Із збільшенням рівня складності,  кількість ходів у користувача зменшується. У ході гри кількість ходів зменшується тільки тоді, коли гравець не знайшов банани противника. Після пострілу гравцю повідомляється результат: 'знайдено-забрано повністю', 'знайдено один банан' або 'промахнулись '. У разі “знайдено” - банан змінить колір на червоний і Ви маєте ходити ще раз, поки не промахнетесь; “промахнулись ”-користувач побачить повідомлення “корабля на цій клітинці немає” і гра продовжується; коли ж користувач потопить корабель, з'явиться повідомлення  ”Ваш корабель потоплено/ потоплено корабель супротивника !” Гра триває до моменту, коли мавпочка не знайде всі банани іншої.\n" +
+                        "   Перший рівень - стовідсоткове знайдення всіх бананів. Дається 70 ходів. Так як загальна кількість клітинок - 100, з яких 31 - заповнені бананами, то навіть використавши 69 ходів, стріляючи по клітинках, які не містять бананів , 70-та клітинка міститиме корабель. А у разі влучання кількість ходів не зменшується;" +
                         "\n" +
-                        "\n4. Рівні складності: гра містить три рівні складності, позначені чорними кружечками в куті екрана." +
+                        "   Другий рівень - 80-відсоткове попадання . Надається 54 ходи;" +
                         "\n" +
-                        "    Перший рівень - стовідсоткове знайдення всіх бананів. Дається 70 ходів. Так як загальна кількість клітинок - 100, з яких 31 - заповнені бананами, то навіть використавши 69 ходів, стріляючи по клітинках, які не містять кораблів , 70-та клітинка міститиме корабель. А у разі влучання кількість ходів не зменшується;\n" +
-                        "\n" +
-                        "   Другий рівень - 80-відсоткове попадання . Надається 54 ходи;\n" +
-                        "\n" +
-                        "   Третій рівень - 40 -відсоткове попадання.  Надається 24 ходи.\n" +
-                        "\n" +
-                        "\n" +
-                        "\n5. Правила перемоги: Гравець, який першим знайде всі банани противника, вважається переможцем."
+                        "   Третій рівень - 40 -відсоткове попадання.  Надається 24 ходи. " +
+                        "\n" + "\n" +
+                        ". Правила перемоги: Гравець, який першим знайде всі банани противника, вважається переможцем."
 
         );
         textInstruction.setLineWrap(true);
@@ -241,13 +260,13 @@ public class Frame extends JFrame {
         });
 
         //CHOOSE BANANAS TYPE LABEL
-        bananasType = new JLabel("Оберіть тип банана ");
-        bananasType.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 25, PANEL_Y_FROM_TOP + 190, 350, 50);
+        bananasType = new JLabel("Кіл-сть бананів у кошику");
+        bananasType.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 35, PANEL_Y_FROM_TOP + 190, 350, 50);
         bananasType.setFont(new Font("Calibri", Font.PLAIN, 20));
         backgroundPanel.add(bananasType);
 
         //LIST OF BANANAS TYPE BUTTON
-        String[] choices = {"", "двопалубні x4", "трипалубні x3", "чотирипалубні x2", "шестипалубні x1"};
+        String[] choices = {"", "Два x4", "Три x3", "Чотири x2", "Шість x1"};
         listOfBananas = new JComboBox(choices);
         listOfBananas.setBackground(Color.white);
         listOfBananas.setForeground(Color.black);
@@ -257,8 +276,8 @@ public class Frame extends JFrame {
         //COORDINATE LABEL
         coordinateLabel = new JLabel("Напишіть координати (a8)");
         coordinateLabel.setForeground(Color.black);
-        coordinateLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-        coordinateLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 45, PANEL_Y_FROM_TOP + 320, 275, 50);
+        coordinateLabel.setFont(new Font("Calibri", Font.PLAIN, 18));
+        coordinateLabel.setBounds(17 * PANEL_X_FROM_BORDER + PANEL_FOR_FIGHT_WIDTH_HEIGHT - 45, PANEL_Y_FROM_TOP + 320, 300, 50);
         backgroundPanel.add(coordinateLabel);
 
         //FILL COORDINATES
@@ -293,8 +312,8 @@ public class Frame extends JFrame {
         });
 
 
-        informationForUserAboutDecker = new JLabel("<html>Будь ласка, спочатку розставте всю необхідну кількість<br>  для конкретної" +
-                " палуби, і тільки тоді переходьте до іншої.<br> У разі зайвого корабля, Ви можете його видалити ");
+        informationForUserAboutDecker = new JLabel("<html>Будь ласка, спочатку розставте всю необхідну кількість<br>  для конкретного" +
+                " кошика, і тільки тоді переходьте до іншого.<br> У разі зайвого банану, Ви можете його видалити ");
         informationForUserAboutDecker.setBounds(25, FRAME_HEIGHT - 205, 800, 100);
         informationForUserAboutDecker.setForeground(Color.white);
         informationForUserAboutDecker.setFont(new Font("f", Font.PLAIN, 17));
@@ -333,14 +352,14 @@ public class Frame extends JFrame {
                 deckerAmount = 6;
                 times = 1;
             } else {
-                JOptionPane.showMessageDialog(backgroundPanel, "Оберіть палубу ", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(backgroundPanel, "Оберіть кіл-сть бананів ", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
 
             System.out.println("X: " + xCoordinate + " Y: " + yCoordinate);
             if (attemptsCount / deckerAmount >= times) {
-                JOptionPane.showMessageDialog(backgroundPanel, "Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(backgroundPanel, "Оберіть іншу кіл-сть бананів", "ERROR", JOptionPane.ERROR_MESSAGE);
                 attemptsCount = 0;
 
                 if (deckerAmount == 2) twoDeckSet = true; //true-усі розставлені
@@ -352,16 +371,16 @@ public class Frame extends JFrame {
             } else {
 
                 if (twoDeckSet && threeDeckSet && fourDeckSet && sixDeckSet) {
-                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кораблі. Переходьте до гри", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі банани. Переходьте до гри", "ERROR", JOptionPane.ERROR_MESSAGE);
 
                 } else if (deckerAmount == 2 && twoDeckSet) {
-                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 2-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кошики з 2-ма бананами.Оберіть іншу кіл-сть", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else if (deckerAmount == 3 && threeDeckSet) {
-                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 3-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кошики з 3-ма бананами.Оберіть іншу кіл-сть", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else if (deckerAmount == 4 && fourDeckSet) {
-                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 4-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кошики з 4-ма бананами.Оберіть іншу кіл-сть", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else if (deckerAmount == 6 && sixDeckSet) {
-                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі 6-палубні.Оберіть нову палубу", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(backgroundPanel, "Ви вже розмістили всі кошики з 6-ма бананами.Оберіть іншу кіл-сть", "ERROR", JOptionPane.ERROR_MESSAGE);
 
                 } else {
                     placeBanana(xCoordinate, yCoordinate, chosenItem);
@@ -406,13 +425,13 @@ public class Frame extends JFrame {
 
             //ПЕРЕВІРКА, ЧИ ВСІ КОРАБЛІ РОЗСТАВЛЕНІ
             if (!twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet) {//ПОВЕРНУТИ НАЗАД-  !twoDeckSet || !threeDeckSet || !fourDeckSet || !sixDeckSet
-                String whichDeckIsnotPlaced = "Не розставлені палуби: ";
-                if (!twoDeckSet) whichDeckIsnotPlaced += " 2-палубні ";
-                if (!threeDeckSet) whichDeckIsnotPlaced += " 3-палубні ";
-                if (!fourDeckSet) whichDeckIsnotPlaced += " 4-палубні ";
-                if (!sixDeckSet) whichDeckIsnotPlaced += " 6-палубні ";
+                String whichDeckIsnotPlaced = "Не розставлені кошики: ";
+                if (!twoDeckSet) whichDeckIsnotPlaced += " з 2-ма бананами ";
+                if (!threeDeckSet) whichDeckIsnotPlaced += " з 3-ма бананами ";
+                if (!fourDeckSet) whichDeckIsnotPlaced += " з 4-ма бананами ";
+                if (!sixDeckSet) whichDeckIsnotPlaced += " з 6-ма бананами ";
 
-                JOptionPane.showMessageDialog(backgroundPanel, "Ви не розставили всі кораблі \n" + whichDeckIsnotPlaced, "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(backgroundPanel, "Ви не розставили всі банани \n" + whichDeckIsnotPlaced, "ERROR", JOptionPane.ERROR_MESSAGE);
 
             } else if (levelOfGame != 1 && levelOfGame != 2 && levelOfGame != 3) {
                 JOptionPane.showMessageDialog(backgroundPanel, "Необхідно обрати рівень гри", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -451,6 +470,8 @@ public class Frame extends JFrame {
     }
 
 
+    // дії у разі вистрілу користувачем
+
     private void placeBananaInUserArea(int x, int y, boolean result) { // розташувати банан або шкірку від банана після вистрілу комп'ютера
         JPanel panel = new JPanel();
 
@@ -474,9 +495,9 @@ public class Frame extends JFrame {
                     numberOfSuccessfulShotsOfUser + "/31 <br> Комп'ютера: " + numberOfSuccessfulShotsOfComputer + "/31"
             );
 
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\redBanana.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/redBanana.jpeg";
         } else {
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
         }
 
         ImageIcon icon = new ImageIcon(imagePath);
@@ -493,9 +514,6 @@ public class Frame extends JFrame {
 
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
     }
-
-
-    // дії у разі вистрілу користувачем
 
     private void toShoot() {
         if (!checkFormatOfCoordinatesForShooting()) {
@@ -518,7 +536,7 @@ public class Frame extends JFrame {
             // ЗЛА МАВПОЧКА, БО НЕ ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\angryMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\angryMonkey.jpg";
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/angryMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -543,7 +561,7 @@ public class Frame extends JFrame {
             // ЩАСЛИВА МАВПОЧКА, БО ЗНАЙШЛА БАНАН
             // Zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
             // Liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
-            String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+            String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
             ImageIcon icon = new ImageIcon(imagePath);
             Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -615,6 +633,18 @@ public class Frame extends JFrame {
 
         // постріл комп'ютера
         organiseComputerShoot();
+
+        if (numberOfSteps == 0 || numberOfSuccessfulShotsOfComputer == 31) {  //СКИНУТИ ЛІЗІ
+            // Delay the execution of the dialog using a separate thread
+            SwingUtilities.invokeLater(() -> {
+
+                if (numberOfSteps == 0) {
+                    lostMessage("Ходів більше немає");
+                } else if(numberOfSuccessfulShotsOfComputer == 31) {
+                    lostMessage("Комп'ютер знайшов всі ваші банани:( ");
+                }
+            });
+        }
     }
 
     private void organiseComputerShoot() {
@@ -675,7 +705,6 @@ public class Frame extends JFrame {
         return false;
     }
 
-
     private void placeBananaInComputerArea(int x, int y, boolean result) { // result - true, якщо там був банан
         JPanel panel = new JPanel();
 
@@ -692,8 +721,8 @@ public class Frame extends JFrame {
 
         String imagePath;
         if (result) {
-            imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
-        } else imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\peel.jpeg";
+            imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
+        } else imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/peel.jpeg";
 
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
@@ -709,7 +738,6 @@ public class Frame extends JFrame {
         SwingUtilities.updateComponentTreeUI(backgroundPanel);
 
     }
-
 
     private boolean checkFormatOfCoordinatesForShooting() {
         //  typeCoordinate
@@ -805,7 +833,7 @@ public class Frame extends JFrame {
 
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg
         // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\banana.jpeg
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\banana.jpeg";
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/banana.jpeg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -956,19 +984,13 @@ public class Frame extends JFrame {
     public void happyMonkeyImage() {
         // liza: /home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg
         //zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\happyMonkey.jpg
-        String imagePath = "C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\happyMonkey.jpg";
+        String imagePath = "/home/liza/IdeaProjects/Monkeyfury/src/happyMonkey.jpg";
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         monkeyLabel = new JLabel(scaledIcon);
         monkeyLabel.setBounds(FRAME_WIDTH / 2 - 70, FRAME_HEIGHT / 2 + 15, 80, 80);
         backgroundPanel.add(monkeyLabel);
-    }
-
-
-    public static void main(String[] args) {
-        new Frame();
-
     }
 
     private static class BackgroundPanel extends JPanel {
@@ -979,7 +1001,7 @@ public class Frame extends JFrame {
             //Path
             // liza:/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg
             // zlata: C:\Users\plato\IdeaProjects\Monkeyfury\src\beach.jpg
-            backgroundImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\plato\\IdeaProjects\\Monkeyfury\\src\\beach.jpg");
+            backgroundImage = Toolkit.getDefaultToolkit().getImage("/home/liza/IdeaProjects/Monkeyfury/src/beach.jpg");
         }
 
         @Override
